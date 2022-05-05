@@ -10,7 +10,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/testdb3 # mysql? ??? database? ???????.
     username: rhkdrod12
-    password: skgodsla!12
+    password: rhkdwls
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
 #      data-source-properties:

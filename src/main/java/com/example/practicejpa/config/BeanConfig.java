@@ -4,15 +4,19 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import javax.persistence.EntityManager;
 
 @Configuration
 public class BeanConfig {
 	
 	
-	Hibernate5Module hibernate5Module() {
+	private Hibernate5Module hibernate5Module() {
 		Hibernate5Module hm = new Hibernate5Module();
 		hm.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
 		return hm;
@@ -30,7 +34,19 @@ public class BeanConfig {
 	}
 	
 	@Bean
-	MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
+	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
 		return new MappingJackson2HttpMessageConverter(objectMapper());
 	}
+	
+	
+	@Bean
+	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager){
+		return new JPAQueryFactory(entityManager);
+	}
+	
+	@Bean
+	public Session session(EntityManager entityManager) {
+		return entityManager.unwrap(Session.class);
+	}
+	
 }

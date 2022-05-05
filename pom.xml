@@ -23,28 +23,16 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>2.6.5</version>
         </dependency>
-        <!-- <dependency> -->
-        <!--     <groupId>org.springframework.boot</groupId> -->
-        <!--     <artifactId>spring-boot-starter-security</artifactId> -->
-        <!-- </dependency> -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>2.6.6</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>2.6.5</version>
         </dependency>
-        <!-- <dependency> -->
-        <!--     <groupId>org.springframework.session</groupId> -->
-        <!--     <artifactId>spring-session-core</artifactId> -->
-        <!-- </dependency> -->
-        <!-- <dependency> -->
-        <!--     <groupId>org.springframework.boot</groupId> -->
-        <!--     <artifactId>spring-boot-starter-data-redis</artifactId> -->
-        <!-- </dependency> -->
-        <!-- <dependency> -->
-        <!--     <groupId>org.springframework.session</groupId> -->
-        <!--     <artifactId>spring-session-data-redis</artifactId> -->
-        <!-- </dependency> -->
-        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -80,17 +68,6 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
             <version>2.6.5</version>
         </dependency>
-        
-        
-        <!-- <dependency> -->
-        <!--     <groupId>org.springframework.security</groupId> -->
-        <!--     <artifactId>spring-security-test</artifactId> -->
-        <!--     <scope>test</scope> -->
-        <!-- </dependency> -->
-        <!-- QueryDsl 관련 의존성 -->
-        <!--
-         
-         -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
