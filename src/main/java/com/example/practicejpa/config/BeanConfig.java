@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import javax.persistence.EntityManager;
 
 @Configuration
 public class BeanConfig {
@@ -18,8 +22,8 @@ public class BeanConfig {
 		return hm;
 	}
 	
-	
-	private ObjectMapper objectMapper(){
+	@Bean
+	ObjectMapper objectMapper(){
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(hibernate5Module());
 		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
@@ -28,6 +32,17 @@ public class BeanConfig {
 		
 		return objectMapper;
 	}
+	
+	@Bean
+	Session session(EntityManager entityManager) {
+		return entityManager.unwrap(Session.class);
+	}
+	
+	@Bean
+	JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+		return new JPAQueryFactory(entityManager);
+	}
+	
 	
 	@Bean
 	MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){

@@ -2,38 +2,72 @@ package com.example.practicejpa.controller;
 
 
 import com.example.practicejpa.dto.ResponseDto;
-import com.example.practicejpa.modal.Menu;
+import com.example.practicejpa.handler.ChannelHandler;
+import com.example.practicejpa.service.MenuService;
 import com.example.practicejpa.vo.MenuVo;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
-
+	
+	@Autowired
+	MenuService menuService;
+	@Autowired
+	ChannelHandler channelHandler;
+	
 	@GetMapping("/get")
 	public ResponseDto<?> getMenu(){
-		
-		List<MenuVo> menuList = new ArrayList<>();
-		menuList.add(MenuVo.builder().menuId(1L).name("사용자 정보").type("HEADER").build());
-		menuList.add(MenuVo.builder().menuId(1L).name("일반인 정보").type("HEADER").build());
-		menuList.add(MenuVo.builder().menuId(1L).name("관리자 정보").type("HEADER").build());
-		return new ResponseDto<>(menuList);
+		return new ResponseDto<>(menuService.getMenuList("HEADER"));
 	}
 	
 	@GetMapping("/get2")
 	public ResponseDto<?> getMenu2(@RequestParam("menuType") String menuType){
-		
-		System.out.println(menuType);
-		return new ResponseDto<>(MenuVo.builder().menuId(1L).name("사용자 정보").type("HEADER").build());
+		return new ResponseDto<>(menuService.getMenuList(menuType));
 	}
 	
-	
-	@PutMapping("/insert")
-	public ResponseDto<?> insertMenu(){
+	@PutMapping("/update")
+	public ResponseDto<?> updateMenu(){
 		return new ResponseDto<>();
 	}
-
+	
+	@PostMapping("/insert")
+	public ResponseDto<?> insertMenu(@RequestBody List<MenuVo> menuVos){
+		System.out.println(menuVos);
+		if (menuVos != null && menuVos.size() > 0) {
+			menuService.saveOrUpdate(menuVos);
+		}
+		
+		return new ResponseDto<>();
+	}
+	
+	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<MenuVo> fluxTest(){
+		//Sinks.Many<MenuVo> many = Sinks.many().multicast().directAllOrNothing();
+		System.out.println("sse 진입");
+		System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
+		
+		return channelHandler.asFlux();
+	}
+	
+	@PostMapping(value = "/insertSee")
+	public ResponseDto<?> getSee(@RequestBody List<MenuVo> menuVos){
+		System.out.println(menuVos);
+		if (menuVos != null && menuVos.size() > 0) {
+			menuService.saveOrUpdateSee(menuVos);
+		}
+		return new ResponseDto<>();
+	}
+	
 }

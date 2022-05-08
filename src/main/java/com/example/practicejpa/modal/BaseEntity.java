@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Getter
@@ -14,7 +15,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 	
 	@Transient
 	final public static String IDENTIFIER = "CREATOR";

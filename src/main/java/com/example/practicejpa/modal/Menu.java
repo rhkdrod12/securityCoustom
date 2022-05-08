@@ -28,20 +28,25 @@ public class Menu extends BaseEntity{
 			valueColumnName = "NEXT_VAL",
 			schema = "testdb2",
 			allocationSize = 1)
-	@Column(name = "MENU_ID")
+	@Column(name = "MENU_ID", nullable = false)
 	Long menuId;
-	@Column(name = "TYPE")
+	// 메뉴타입(어디 메뉴인지)
+	@Column(name = "TYPE", nullable = false)
 	String type;
-	@Column(name = "NAME")
+	// 메뉴명
+	@Column(name = "NAME", nullable = false)
 	String name;
-	@Column(name = "URL")
+	// 접근 URL
+	@Column(name = "URL", nullable = false)
 	String url;
-	
+	// 상위메뉴
 	@Column(name = "UPPER_MENU")
 	Long upperMenu;
-	@Column(name = "Depth", length = 5)
-	int depth;
-	@Column(name = "MENU_ORDER", length = 5)
-	int order;
+	// 메뉴 깊이
+	@Column(name = "MENU_DEPTH", length = 5)
+	int menuDepth;
+	// 메뉴 순서
+	@Column(name = "MENU_ORDER", length = 5, nullable = false)
+	int menuOrder;
 	
 }
