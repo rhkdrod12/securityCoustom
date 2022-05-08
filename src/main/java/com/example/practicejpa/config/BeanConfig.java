@@ -16,14 +16,14 @@ import javax.persistence.EntityManager;
 public class BeanConfig {
 	
 	
-	private Hibernate5Module hibernate5Module() {
+	Hibernate5Module hibernate5Module() {
 		Hibernate5Module hm = new Hibernate5Module();
 		hm.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
 		return hm;
 	}
 	
-	
-	private ObjectMapper objectMapper(){
+	@Bean
+	ObjectMapper objectMapper(){
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(hibernate5Module());
 		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
@@ -34,19 +34,18 @@ public class BeanConfig {
 	}
 	
 	@Bean
-	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
-		return new MappingJackson2HttpMessageConverter(objectMapper());
-	}
-	
-	
-	@Bean
-	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager){
-		return new JPAQueryFactory(entityManager);
-	}
-	
-	@Bean
-	public Session session(EntityManager entityManager) {
+	Session session(EntityManager entityManager) {
 		return entityManager.unwrap(Session.class);
 	}
 	
+	@Bean
+	JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+		return new JPAQueryFactory(entityManager);
+	}
+	
+	
+	@Bean
+	MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
+		return new MappingJackson2HttpMessageConverter(objectMapper());
+	}
 }

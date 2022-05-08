@@ -7,10 +7,16 @@ import java.util.List;
 
 public interface MenuService {
 	
-	List<MenuVo> getMenus(String menuType);
+	List<MenuVo> getMenuList(String menuType);
 	
-	void saveOrUpdate(MenuVo menu);
+	void save(MenuVo menuVo);
 	
-	void saveOrUpdate(Collection<MenuVo> menus);
+	void save(Collection<MenuVo> menuVos);
+	
+	void saveOrUpdate(MenuVo menuVo);
+	
+	void saveOrUpdate(Collection<MenuVo> menuVos);
+	
+	void saveOrUpdateSee(Collection<MenuVo> menuVos);
 	
 }

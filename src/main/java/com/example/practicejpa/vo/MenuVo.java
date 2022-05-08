@@ -21,7 +21,7 @@ public class MenuVo extends BaseVo{
 	String name;
 	String url;
 	Long upperMenu;
-	int depth;
-	int order;
+	int menuDepth;
+	int menuOrder;
 	
 }
