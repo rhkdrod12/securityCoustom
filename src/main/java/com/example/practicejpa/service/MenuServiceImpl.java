@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,7 +24,18 @@ public class MenuServiceImpl implements MenuService {
 	
 	@Override
 	public List<MenuVo> getMenuList(String menuType) {
-		return menuDto.getMenuList(menuType);
+		Map<Long, MenuVo> menuMap = menuDto.getMenuMap(menuType);
+		List<MenuVo> collect = menuMap.entrySet().stream().map(entry -> {
+			if (entry.getValue().getUpperMenu() != null) {
+				MenuVo upperMenuVo = menuMap.get(entry.getKey());
+				if (upperMenuVo != null) {
+					upperMenuVo.getChildMenu().add(entry.getValue());
+				}
+			}
+			return entry.getValue();
+		}).collect(Collectors.toList());
+		
+		return collect;
 	}
 	
 	@Override
@@ -47,9 +60,11 @@ public class MenuServiceImpl implements MenuService {
 	
 	@Override
 	public void saveOrUpdateSee(Collection<MenuVo> menuVos) {
+		
 		menuVos.forEach(item->{
 			this.saveOrUpdate(item);
 			channelHandler.getSink().tryEmitNext(item);
+			
 			System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
 		});
 		
