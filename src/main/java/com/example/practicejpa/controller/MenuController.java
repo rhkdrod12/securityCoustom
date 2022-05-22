@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,8 @@ public class MenuController {
 	MenuService menuService;
 	@Autowired
 	ChannelHandler channelHandler;
+	@Autowired
+	HttpSession httpSession;
 	
 	@GetMapping("/get")
 	public ResponseDto<?> getMenu(){
@@ -54,10 +57,11 @@ public class MenuController {
 	
 	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<MenuVo> fluxTest(){
+		
 		//Sinks.Many<MenuVo> many = Sinks.many().multicast().directAllOrNothing();
+		System.out.println("ID: " + httpSession.getId());
 		System.out.println("sse 진입");
 		System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
-		
 		return channelHandler.asFlux();
 	}
 	
@@ -69,5 +73,6 @@ public class MenuController {
 		}
 		return new ResponseDto<>();
 	}
+	
 	
 }

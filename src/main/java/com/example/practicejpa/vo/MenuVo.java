@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @Builder
 @Getter
 @Setter
@@ -23,5 +25,5 @@ public class MenuVo extends BaseVo{
 	Long upperMenu;
 	int menuDepth;
 	int menuOrder;
-	
+	ArrayList<MenuVo> childMenu = new ArrayList<>();
 }

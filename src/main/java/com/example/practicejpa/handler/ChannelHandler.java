@@ -10,17 +10,18 @@ public class ChannelHandler {
 	
 	private final Sinks.Many<MenuVo> scheduleEvents;
 	
-	
 	public ChannelHandler() {
 		this.scheduleEvents = Sinks.many().multicast().directAllOrNothing();
 	}
 	
 	public Sinks.Many<MenuVo> getSink(){
+		
 		return this.scheduleEvents;
 	}
 	
 	public Flux<MenuVo> asFlux(){
 		return scheduleEvents.asFlux();
+		
 	}
 	
 }
