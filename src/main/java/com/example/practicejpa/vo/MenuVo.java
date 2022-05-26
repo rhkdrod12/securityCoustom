@@ -20,6 +20,7 @@ public class MenuVo extends BaseVo{
 	
 	Long menuId;
 	String type;
+	String category;
 	String name;
 	String url;
 	Long upperMenu;

@@ -16,7 +16,7 @@ public interface MenuService {
 	
 	void saveOrUpdate(MenuVo menuVo);
 	
-	void saveOrUpdate(Collection<MenuVo> menuVos);
+	List<MenuVo> saveOrUpdate(Collection<MenuVo> menuVos);
 	
 	void saveOrUpdateSee(Collection<MenuVo> menuVos);
 	

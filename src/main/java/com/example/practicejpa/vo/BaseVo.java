@@ -13,4 +13,5 @@ public class BaseVo {
 	@Builder.Default
 	CrudStatus status = CrudStatus.READ;
 	
+	static Class clz = BaseVo.class;
 }

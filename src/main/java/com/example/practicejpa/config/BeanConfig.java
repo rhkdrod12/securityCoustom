@@ -1,15 +1,18 @@
 package com.example.practicejpa.config;
 
+import com.example.practicejpa.utils.P6spyPrettySqlFormatter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.p6spy.engine.spy.P6SpyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 @Configuration
@@ -47,5 +50,10 @@ public class BeanConfig {
 	@Bean
 	MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
 		return new MappingJackson2HttpMessageConverter(objectMapper());
+	}
+	
+	@PostConstruct
+	public void setLogMessageFormat() {
+		P6SpyOptions.getActiveInstance().setLogMessageFormat(P6spyPrettySqlFormatter.class.getName());
 	}
 }

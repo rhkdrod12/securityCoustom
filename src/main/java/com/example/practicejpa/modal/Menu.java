@@ -27,7 +27,7 @@ import javax.persistence.TableGenerator;
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Menu extends BaseEntity{
-
+	// 메뉴PK
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "MENU_GENERATOR")
 	@TableGenerator(
@@ -43,14 +43,17 @@ public class Menu extends BaseEntity{
 	// 메뉴타입(어디 메뉴인지)
 	@Column(name = "TYPE", nullable = false)
 	String type;
+	// 메뉴 범주(사실 이런건 코드화해야겠지만 당장은 안되니)
+	@Column(name = "CATEGORY", nullable = true)
+	String category;
 	// 메뉴명
 	@Column(name = "NAME", nullable = false)
 	String name;
 	// 접근 URL
 	@Column(name = "URL", nullable = false)
 	String url;
-	// 상위메뉴
-	@Column(name = "UPPER_MENU")
+	// 상위 메뉴PK
+	@Column(name = "UPPER_MENU", nullable = true)
 	Long upperMenu;
 	// 메뉴 깊이
 	@Column(name = "MENU_DEPTH", length = 5)

@@ -1,8 +1,10 @@
 package com.example.practicejpa.service;
 
-import com.example.practicejpa.dto.MenuDto;
+import com.example.practicejpa.dao.MenuDao;
 import com.example.practicejpa.handler.ChannelHandler;
+import com.example.practicejpa.modal.BaseEntity;
 import com.example.practicejpa.modal.Menu;
+import com.example.practicejpa.repository.MenuRepository;
 import com.example.practicejpa.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,55 +19,45 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl implements MenuService {
 	
 	@Autowired
-	MenuDto menuDto;
+	MenuDao menuDao;
+	@Autowired
+	MenuRepository menuRepository;
 	@Autowired
 	ChannelHandler channelHandler;
 	
 	@Override
 	public List<MenuVo> getMenuList(String menuType) {
-		Map<Long, MenuVo> menuMap = menuDto.getMenuMap(menuType);
-		List<MenuVo> collect = menuMap.entrySet().stream().map(entry -> {
-			if (entry.getValue().getUpperMenu() != null) {
-				MenuVo upperMenuVo = menuMap.get(entry.getKey());
-				if (upperMenuVo != null) {
-					upperMenuVo.getChildMenu().add(entry.getValue());
-				}
-			}
-			return entry.getValue();
-		}).collect(Collectors.toList());
-		
-		return collect;
+		return menuDao.getMenuList(menuType);
 	}
 	
 	@Override
 	public void save(MenuVo menuVo) {
-		menuDto.save(menuVo, Menu.class);
+		menuDao.save(menuVo, Menu.class);
 	}
 	
 	@Override
 	public void save(Collection<MenuVo> menuVos) {
-		menuDto.save(menuVos, Menu.class);
+		menuDao.save(menuVos, Menu.class);
 	}
 	
 	@Override
 	public void saveOrUpdate(MenuVo menuVo) {
-		menuDto.saveOrUpdate(menuVo, Menu.class);
+		menuDao.saveOrUpdate(menuVo, Menu.class);
 	}
 	
 	@Override
-	public void saveOrUpdate(Collection<MenuVo> menuVos) {
-		menuDto.saveOrUpdate(menuVos, Menu.class);
+	public List<MenuVo> saveOrUpdate(Collection<MenuVo> menuVos) {
+		List<BaseEntity> baseEntities = menuDao.saveOrUpdate(menuVos, Menu.class);
+		menuDao.flush();
+		return baseEntities.stream().map(entity -> menuDao.convertVo(MenuVo.class, entity)).collect(Collectors.toList());
 	}
 	
 	@Override
 	public void saveOrUpdateSee(Collection<MenuVo> menuVos) {
-		
-		menuVos.forEach(item->{
-			this.saveOrUpdate(item);
+		List<MenuVo> menuVos1 = this.saveOrUpdate(menuVos);
+		menuVos1.forEach(item ->{
 			channelHandler.getSink().tryEmitNext(item);
-			
-			System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
 		});
-		
+		System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
 	}
 }

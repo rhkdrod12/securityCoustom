@@ -1,6 +1,8 @@
 package com.example.practicejpa.dao;
 
 import com.example.practicejpa.modal.BaseEntity;
+import com.example.practicejpa.vo.BaseVo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,46 +10,64 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class BaseJpaEntityDao {
 	
+	@Autowired
+	EntityManager entityManager;
 	
 	@Autowired
-	private EntityManager entityManager;
+	Session session;
+	
 	@Autowired
-	private Session session;
+	JPAQueryFactory jpaQueryFactory;
+	
 	@Autowired
-	public JPAQueryFactory jpaQueryFactory;
+	ObjectMapper objectMapper;
+	public void flush(){		session.flush();	}
+	public void detach(Object object){session.detach(object);}
 	
-	// 저장
-	public <T extends BaseEntity> void save(T object){
-		session.save(object);
+	public <T extends BaseEntity> void save(T entity) {
+		session.save(entity);
 	}
-	public <T extends BaseEntity> void save(Collection<T> collection){
-		for (T t : collection) {
-			session.save(t);
-		}
+	public <T extends BaseEntity> void save(Collection<T> entities) {
+		entities.forEach(entity-> session.save(entity));
+	}
+	public <T extends BaseEntity> void saveOrUpdate(T entity) {
+		session.saveOrUpdate(entity);
+	}
+	public <T extends BaseEntity> void saveOrUpdate(Collection<T> entities) {
+		entities.forEach(entity-> session.saveOrUpdate(entity));
+	}
+	public <T extends BaseVo> BaseEntity save(T vo, Class<? extends BaseEntity> clazz) {
+		BaseEntity baseEntity = convertObject(clazz, vo);
+		session.save(baseEntity);
+		return baseEntity;
+	}
+	public <T extends BaseVo> List<BaseEntity> save(Collection<T> vos, Class<? extends BaseEntity> clazz) {
+		return vos.stream().map(vo-> save(vo, clazz)).collect(Collectors.toList());
+	}
+	public <T extends BaseVo> BaseEntity saveOrUpdate(T vo, Class<? extends BaseEntity> clazz) {
+		BaseEntity baseEntity = convertObject(clazz, vo);
+		session.saveOrUpdate(baseEntity);
+		return baseEntity;
+	}
+	public <T extends BaseVo> List<BaseEntity> saveOrUpdate(Collection<T> vos, Class<? extends BaseEntity> clazz) {
+		return vos.stream().map(vo -> saveOrUpdate(vo, clazz)).collect(Collectors.toList());
 	}
 	
-	// 저장및업데이트
-	public <T extends BaseEntity> void saveOrUpdate(T object){
-		session.saveOrUpdate(object);
-	}
-	public <T extends BaseEntity> void saveOrUpdate(Collection<T> collection){
-		for (T t : collection) {
-			session.saveOrUpdate(t);
-		}
+	public <T extends BaseEntity> T convertObject(Class<T> clazz, Object obj) {
+		return objectMapper.convertValue(obj, clazz);
 	}
 	
-	// 삭제
-	public <T extends BaseEntity> void remove(T object) {
-		session.remove(object);
-	}
-	public <T extends BaseEntity> void remove(Collection<T> collection){
-		for (T t : collection) {
-			session.remove(t);
-		}
+	public <T extends BaseVo> T convertVo(Class<T> clazz, Object obj) {
+		return objectMapper.convertValue(obj, clazz);
 	}
 	
+	public <T extends BaseEntity> List<T> convertCollection(Class<T> clazz, Collection<?> obj) {
+		return obj.stream().map(o -> convertObject(clazz, o)).collect(Collectors.toList());
+	}
 }
