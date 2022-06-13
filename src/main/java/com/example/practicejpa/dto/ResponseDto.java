@@ -1,11 +1,13 @@
 package com.example.practicejpa.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor
+@Builder
 public class ResponseDto<T> {
 	
 	HttpStatus status = HttpStatus.OK;

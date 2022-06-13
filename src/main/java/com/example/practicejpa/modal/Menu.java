@@ -57,10 +57,9 @@ public class Menu extends BaseEntity{
 	Long upperMenu;
 	// 메뉴 깊이
 	@Column(name = "MENU_DEPTH", length = 5)
-	int menuDepth;
+	int menuDepth = 0;
 	// 메뉴 순서
 	@Column(name = "MENU_ORDER", length = 5, nullable = false)
 	int menuOrder;
-	
 
 }
