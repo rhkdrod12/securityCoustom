@@ -36,7 +36,7 @@ public class Menu extends BaseEntity{
 			pkColumnName = "SEQNO",
 			pkColumnValue = "MENU_ID",
 			valueColumnName = "NEXT_VAL",
-			schema = "testdb2",
+			schema = "testdb3",
 			allocationSize = 1)
 	@Column(name = "MENU_ID", nullable = false)
 	Long menuId;

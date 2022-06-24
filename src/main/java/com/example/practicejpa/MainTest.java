@@ -13,6 +13,7 @@ public class MainTest {
 		Object object = menuVo;
 		System.out.println("methodInvoke(MenuVo.class, object) = " + methodInvoke(MenuVo.class, object));
 		
+		
 	}
 	
 	static Object methodInvoke(Class<?> clz, Object object, Object ...param){

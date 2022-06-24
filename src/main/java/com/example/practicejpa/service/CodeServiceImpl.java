@@ -17,6 +17,7 @@ public class CodeServiceImpl implements CodeService{
 	
 	@Override
 	public List<Code> getCode(String code) {
-		return codeRepository.findByUpperCodeCode(code);
+		List<Code> byUpperCodeCode = codeRepository.findByUpperCodeCode(code);
+		return byUpperCodeCode;
 	}
 }

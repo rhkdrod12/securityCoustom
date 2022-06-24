@@ -42,7 +42,7 @@ public class Code extends BaseEntity{
 	@Column(name = "CODE_DEPTH")
 	int codeDepth = 0;
 	// 하위코드
-	@OneToMany(mappedBy = "upperCode", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "upperCode", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	Set<Code> childCodes;
 	// 상위코드
 	@ManyToOne(fetch = FetchType.LAZY)
