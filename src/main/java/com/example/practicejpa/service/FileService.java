@@ -4,5 +4,10 @@ import com.example.practicejpa.modal.FileMgm;
 
 public interface FileService {
 	
-	public FileMgm getFileInfo(String fileName);
+	FileMgm getFileInfo(String fileName);
+	
+	void insertFile(FileMgm fileMgm);
+	
+	boolean existFile(String fileName);
+	
 }

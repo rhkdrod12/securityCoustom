@@ -18,4 +18,15 @@ public class FileServiceImpl implements FileService {
 	public FileMgm getFileInfo(String fileName) {
 		return fileDao.getFileInfo(fileName);
 	}
+	
+	@Override
+	public void insertFile(FileMgm fileMgm) {
+		fileDao.insertFile(fileMgm);
+	}
+	
+	@Override
+	public boolean existFile(String fileName) {
+		return fileDao.existFile(fileName);
+	}
+	
 }

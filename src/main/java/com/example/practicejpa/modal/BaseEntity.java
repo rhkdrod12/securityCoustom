@@ -19,6 +19,7 @@ public class BaseEntity implements Serializable {
 	
 	@Transient
 	final public static String IDENTIFIER = "CREATOR";
+	
 	@Transient
 	CrudStatus status = CrudStatus.READ;
 	
