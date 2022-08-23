@@ -2,6 +2,7 @@ package com.example.practicejpa.dao;
 
 import com.example.practicejpa.modal.FileMgm;
 import com.example.practicejpa.modal.QFileMgm;
+import com.example.practicejpa.vo.FileMgmDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,12 +30,24 @@ public class FileDao extends BaseJpaEntityDao {
 		}
 	}
 	
+	public boolean existFile(FileMgmDto fileMgmDto) {
+		QFileMgm fileMgm = QFileMgm.fileMgm;
+		Long result = jpaQueryFactory.select(fileMgm.count())
+		                             .from(fileMgm)
+		                             .where(fileMgm.fileName.eq(fileMgmDto.getFileName()),
+											fileMgm.fileExt.eq(fileMgmDto.getFileExt()),
+		                                    fileMgm.creator.eq("SYSTEM"))
+		                             .fetchFirst();
+		return result > 0;
+	}
+	
 	public boolean existFile(String fileName) {
 		
 		QFileMgm fileMgm = QFileMgm.fileMgm;
 		
-		Long result = jpaQueryFactory.select(fileMgm.count()).from(fileMgm)
-		                             .where(fileMgm.fileName.append(".").append(fileMgm.fileExt).eq(fileName))
+		Long result = jpaQueryFactory.select(fileMgm.count())
+		                             .from(fileMgm)
+		                             .where(fileMgm.fileName.eq(fileName))
 		                             .fetchFirst();
 		return result > 0;
 	}

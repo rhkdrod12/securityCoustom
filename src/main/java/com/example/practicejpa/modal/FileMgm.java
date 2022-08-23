@@ -40,10 +40,12 @@ public class FileMgm extends BaseEntity{
 		allocationSize = 1)
 	@Column(name = "FILE_ID", nullable = false)
 	long fileId;
-	
 	// 파일 명
 	@Column(name = "FILE_NAME")
 	String fileName;
+	// 파일 저장명
+	@Column(name = "FILE_SAVE_NAME")
+	String fileSaveName;
 	// 파일 확장자
 	@Column(name = "FILE_EXT")
 	String fileExt;

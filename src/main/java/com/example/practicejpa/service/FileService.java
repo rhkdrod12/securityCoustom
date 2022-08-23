@@ -1,6 +1,7 @@
 package com.example.practicejpa.service;
 
 import com.example.practicejpa.modal.FileMgm;
+import com.example.practicejpa.vo.FileMgmDto;
 
 public interface FileService {
 	
@@ -8,6 +9,9 @@ public interface FileService {
 	
 	void insertFile(FileMgm fileMgm);
 	
+	void insertFile(FileMgmDto fileMgm);
+	
 	boolean existFile(String fileName);
 	
+	boolean existFile(FileMgmDto fileMgm);
 }

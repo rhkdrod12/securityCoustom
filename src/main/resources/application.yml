@@ -21,6 +21,9 @@ decorator:
       logging: slf4j
       
 spring:
+  devtools:
+    livereload:
+      enabled: true
   datasource:
     url: jdbc:mysql://localhost:3306/testdb3 # mysql? ??? database? ???????.
     username: rhkdrod12

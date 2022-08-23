@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -17,10 +19,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
+@ToString
 public class FileMgmDto extends BaseVo{
+	
 	private String fileFullName;
 	private String fileName;
 	private String fileExt;
 	private long fileByte;
+	private String fileSaveName;
 	private String filePath;
+	
+	@ToString.Exclude
+	private MultipartFile file;
+	
 }

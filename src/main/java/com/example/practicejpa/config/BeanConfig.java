@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.p6spy.engine.spy.P6SpyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,6 @@ import javax.persistence.EntityManager;
 
 @Configuration
 public class BeanConfig {
-	
 	
 	Hibernate5Module hibernate5Module() {
 		Hibernate5Module hm = new Hibernate5Module();
