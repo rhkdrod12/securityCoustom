@@ -1,8 +1,10 @@
 package com.example.practicejpa.controller;
 
+import com.example.practicejpa.dto.ResultDto;
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.modal.FileMgm;
 import com.example.practicejpa.service.FileService;
+import com.example.practicejpa.utils.CodeMgm;
 import com.example.practicejpa.utils.ParamUtils;
 import com.example.practicejpa.vo.FileMgmDto;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +14,6 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,7 +59,10 @@ public class FileContorller {
 					// 대용량 데이터에 대한 처리의 경우
 					// content-Disposition: form-data 형태로 사용
 					
-					httpHeaders.setContentDisposition(ContentDisposition.attachment().filename(downloadName, StandardCharsets.UTF_8).build());
+					httpHeaders.setContentDisposition(ContentDisposition.attachment()
+					                                                    .filename(downloadName, StandardCharsets.UTF_8)
+					                                                    .build());
+					
 					return new ResponseEntity<>(resource, httpHeaders, HttpStatus.OK);
 				} else {
 					log.info("존재하지 않는 파일입니다.");
@@ -74,32 +75,29 @@ public class FileContorller {
 		return new ResponseEntity<>(null, HttpStatus.CONFLICT);
 	}
 	
-	/**
-	 * 한번에 전송하는 것도 좋긴한데..
-	 * @param fileInfo
-	 * @param file
-	 * @param httpSession
-	 */
-	@PostMapping("/upload")
-	public void fileUpload(@ModelAttribute(name = "fileInfo") FileMgmDto fileInfo, @RequestParam(name = "file") MultipartFile file, HttpSession httpSession) {
-		if (fileInfo != null && ParamUtils.isNotEmpty(fileInfo.getFileName())) {
-			if (fileService.existFile(fileInfo)) {
-				fileService.insertFile(fileInfo);
-				log.info("도착도착 {}", fileInfo);
-			}
-		}
-	}
-	
-	//@CrossOrigin(origins="*")
-	@PostMapping(value = "/upload2", consumes = "multipart/form-data")
-	public void fileUpload2(@ModelAttribute(name = "fileInfo") FileMgmDto fileInfo) {
+	@PostMapping(value = "/upload", consumes = "multipart/form-data")
+	public ResponseEntity<?> fileUpload(@ModelAttribute(name = "fileInfo") FileMgmDto fileInfo) {
 		if (fileInfo != null && ParamUtils.isNotEmpty(fileInfo.getFileName())) {
 			if (!fileService.existFile(fileInfo)) {
 				log.info("도착 {}", fileInfo);
 				fileService.insertFile(fileInfo);
-			}else{
-				throw new GlobalException("동일한 파일명을 가진 파일이 존재합니다. 파일명을 변경하여 올려주세요");
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(false).resultCode(CodeMgm.EERROR_FILE_EXIST).resultMessage("서버에 등록된 파일입니다.").build());
 			}
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(true).build());
+	}
+	
+	@RequestMapping(value = "/exist")
+	public ResponseEntity<?> fileExist(@RequestBody FileMgmDto fileMgmDto) {
+		if (fileMgmDto != null) {
+			if (!fileService.existFile(fileMgmDto)) {
+				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(true).build());
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(false).resultCode(CodeMgm.EERROR_FILE_EXIST).resultMessage("서버에 등록된 파일입니다.").build());
+			}
+		} else {
+			throw new GlobalException();
 		}
 	}
 }

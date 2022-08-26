@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -34,11 +35,14 @@ public class FileServiceImpl implements FileService {
 		try {
 			// 나중에 유저 정보 추가하면 유저 ID를 키로 저장하면 되겠지.
 			MultipartFile file = fileMgmDto.getFile();
-			String saveFileName = AES256.encryptAES256(fileMgmDto.getFileName(), "SYSTEM");
-			saveFileName = saveFileName.replaceAll("/", "&#47;");
+			
+			//String saveFileName = AES256.encryptAES256(fileMgmDto.getFileName(), "SYSTEM");
+			//saveFileName = saveFileName.replaceAll("/", "&#47;");
+			
+			String saveFileName = UUID.randomUUID().toString();
 			
 			fileMgmDto.setFileSaveName(saveFileName);
-			// 물리적으로 파일 저장(물리명은 AES256으로 암호화하여 저장함)
+			// 물리적으로 파일 저장(물리명은 UUID로 저장함)
 			File pFile = new File("D:\\저장위치\\" + saveFileName);
 			file.transferTo(pFile);
 

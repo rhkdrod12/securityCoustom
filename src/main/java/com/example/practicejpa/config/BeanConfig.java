@@ -12,6 +12,8 @@ import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -55,5 +57,10 @@ public class BeanConfig {
 	@PostConstruct
 	public void setLogMessageFormat() {
 		P6SpyOptions.getActiveInstance().setLogMessageFormat(P6spyPrettySqlFormatter.class.getName());
+	}
+	
+	@Bean
+	public MultipartResolver multipartResolver(){
+		return new CommonsMultipartResolver();
 	}
 }
