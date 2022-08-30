@@ -1,4 +1,4 @@
-package com.example.practicejpa.vo;
+package com.example.practicejpa.dto.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package com.example.practicejpa.service;
 
-import com.example.practicejpa.modal.Code;
-import com.example.practicejpa.repository.CodeRepository;
+import com.example.practicejpa.model.CodeMgm;
+import com.example.practicejpa.dao.repository.CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +16,8 @@ public class CodeServiceImpl implements CodeService{
 	CodeRepository codeRepository;
 	
 	@Override
-	public List<Code> getCode(String code) {
-		List<Code> byUpperCodeCode = codeRepository.findByUpperCodeCode(code);
+	public List<CodeMgm> getCode(String code) {
+		List<CodeMgm> byUpperCodeCode = codeRepository.findByUpperCodeCode(code);
 		return byUpperCodeCode;
 	}
 }

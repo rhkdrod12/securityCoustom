@@ -1,22 +1,35 @@
 package com.example.practicejpa.exception;
 
+import com.example.practicejpa.utils.code.messageInterface.MessageCode;
+import com.example.practicejpa.utils.code.SystemMessage;
 import org.springframework.http.HttpStatus;
 
 public class GlobalException extends RuntimeException {
-	static final String DEFAULT_FAIL_MESSAGE = "처리 중 오류가 발생하였습니다";
 	
-	private String message = DEFAULT_FAIL_MESSAGE;
-	private HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+	private String code = SystemMessage.ERROR_REQUEST_FAIL.Code();
+	private String message = SystemMessage.ERROR_REQUEST_FAIL.Message();
+	private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 	
 	public GlobalException() {
 	}
 	
 	public GlobalException(String message) {
-		this.message    = message;
+		this.message = message;
+	}
+	
+	public GlobalException(MessageCode message) {
+		this.code       = message.Code();
+		this.message    = message.Message();
 	}
 	
 	public GlobalException(HttpStatus httpStatus, String message) {
 		this.message    = message;
+		this.httpStatus = httpStatus;
+	}
+	
+	public GlobalException(HttpStatus httpStatus, MessageCode message) {
+		this.code       = message.Code();
+		this.message    = message.Message();
 		this.httpStatus = httpStatus;
 	}
 	
@@ -25,8 +38,17 @@ public class GlobalException extends RuntimeException {
 		return message;
 	}
 	
+	public String getCode(){
+		return code;
+	}
+	
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public void setMessage(MessageCode message) {
+		this.code = message.Code();
+		this.message = message.Message();
 	}
 	
 	public HttpStatus getHttpStatus() {

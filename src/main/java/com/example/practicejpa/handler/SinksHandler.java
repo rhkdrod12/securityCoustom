@@ -1,6 +1,6 @@
 package com.example.practicejpa.handler;
 
-import com.example.practicejpa.vo.MenuVo;
+import com.example.practicejpa.dto.vo.MenuVo;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;

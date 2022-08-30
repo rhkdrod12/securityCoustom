@@ -1,7 +1,7 @@
-package com.example.practicejpa.vo;
+package com.example.practicejpa.dto.vo;
 
 
-import com.example.practicejpa.utils.CrudStatus;
+import com.example.practicejpa.utils.code.CrudStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

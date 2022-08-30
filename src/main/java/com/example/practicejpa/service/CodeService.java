@@ -1,11 +1,11 @@
 package com.example.practicejpa.service;
 
-import com.example.practicejpa.modal.Code;
+import com.example.practicejpa.model.CodeMgm;
 
 import java.util.List;
 
 
 public interface CodeService {
 	
-	List<Code> getCode(String Code);
+	List<CodeMgm> getCode(String Code);
 }

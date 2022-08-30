@@ -1,4 +1,4 @@
-package com.example.practicejpa.modal;
+package com.example.practicejpa.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -23,14 +23,14 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "CODE")
+@Entity(name = "CODE_MGM")
 @Builder
 @ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Code extends BaseEntity{
+public class CodeMgm extends BaseEntity{
 	// 코드
 	@Id
 	@Column(name = "CODE", nullable = false, unique = true)
@@ -43,10 +43,10 @@ public class Code extends BaseEntity{
 	int codeDepth = 0;
 	// 하위코드
 	@OneToMany(mappedBy = "upperCode", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-	Set<Code> childCodes;
+	Set<CodeMgm> childCodes;
 	// 상위코드
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "UPPER_CODE", referencedColumnName = "CODE")
-	Code upperCode;
+	CodeMgm upperCode;
 	
 }

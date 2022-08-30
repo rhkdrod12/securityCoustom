@@ -2,10 +2,10 @@ package com.example.practicejpa.service;
 
 import com.example.practicejpa.dao.MenuDao;
 import com.example.practicejpa.handler.ChannelHandler;
-import com.example.practicejpa.modal.BaseEntity;
-import com.example.practicejpa.modal.Menu;
-import com.example.practicejpa.repository.MenuRepository;
-import com.example.practicejpa.vo.MenuVo;
+import com.example.practicejpa.model.BaseEntity;
+import com.example.practicejpa.model.MenuMgm;
+import com.example.practicejpa.dao.repository.MenuRepository;
+import com.example.practicejpa.dto.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,22 +33,22 @@ public class MenuServiceImpl implements MenuService {
 	
 	@Override
 	public void save(MenuVo menuVo) {
-		menuDao.save(menuVo, Menu.class);
+		menuDao.save(menuVo, MenuMgm.class);
 	}
 	
 	@Override
 	public void save(Collection<MenuVo> menuVos) {
-		menuDao.save(menuVos, Menu.class);
+		menuDao.save(menuVos, MenuMgm.class);
 	}
 	
 	@Override
 	public void saveOrUpdate(MenuVo menuVo) {
-		menuDao.saveOrUpdate(menuVo, Menu.class);
+		menuDao.saveOrUpdate(menuVo, MenuMgm.class);
 	}
 	
 	@Override
 	public List<MenuVo> saveOrUpdate(Collection<MenuVo> menuVos) {
-		List<BaseEntity> baseEntities = menuDao.saveOrUpdate(menuVos, Menu.class);
+		List<BaseEntity> baseEntities = menuDao.saveOrUpdate(menuVos, MenuMgm.class);
 		menuDao.flush();
 		return baseEntities.stream().map(entity -> menuDao.convertVo(MenuVo.class, entity)).collect(Collectors.toList());
 	}

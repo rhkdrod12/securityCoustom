@@ -1,18 +1,19 @@
 package com.example.practicejpa.controller;
 
-import com.example.practicejpa.dto.ResultDto;
-import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.modal.FileMgm;
+import com.example.practicejpa.dto.FileMgmDto;
+import com.example.practicejpa.model.FileMgm;
 import com.example.practicejpa.service.FileService;
-import com.example.practicejpa.utils.CodeMgm;
-import com.example.practicejpa.utils.ParamUtils;
-import com.example.practicejpa.vo.FileMgmDto;
+import com.example.practicejpa.utils.code.FileFailMessage;
+import com.example.practicejpa.utils.code.SystemMessage;
+import com.example.practicejpa.utils.other.ParamUtils;
+import com.example.practicejpa.utils.responseMessage.CommResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,13 +36,20 @@ public class FileContorller {
 	@Autowired
 	FileService fileService;
 	
-	@GetMapping("/download")
-	public ResponseEntity<Object> fileDownload(@RequestParam(name = "fileName") String fileName) throws IOException {
+	@GetMapping("/getFileList")
+	public ResponseEntity<?> fileList(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+	                                  @RequestParam(name = "limit", required = false, defaultValue = "10") String limit){
+		return CommResponse.done(fileService.getFileList(page, limit));
+	}
+	
+	
+	@GetMapping(value = "/download")
+	public ResponseEntity<Object> fileDownload(@RequestParam(name = "fileId" , defaultValue = "-1") long fileId) throws IOException {
 		log.info("파일 다운로드 요청");
-		if (ParamUtils.isNotEmpty(fileName)) {
-			FileMgm fileInfo = fileService.getFileInfo(fileName);
+		if (ParamUtils.isNotEmpty(fileId)) {
+			FileMgm fileInfo = fileService.getFileInFoById(fileId);
 			if (fileInfo != null) {
-				String path = fileInfo.getFilePath() + "\\" + fileName;
+				String path = fileInfo.getFilePath();
 				File file = new File(path);
 				
 				if (file.isFile()) {
@@ -58,21 +66,25 @@ public class FileContorller {
 					//
 					// 대용량 데이터에 대한 처리의 경우
 					// content-Disposition: form-data 형태로 사용
-					
+					httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 					httpHeaders.setContentDisposition(ContentDisposition.attachment()
+					                                                    .name(downloadName)
 					                                                    .filename(downloadName, StandardCharsets.UTF_8)
 					                                                    .build());
 					
+					// 파일을 내려보내는 거라 이렇게 내려보내야겠네..
 					return new ResponseEntity<>(resource, httpHeaders, HttpStatus.OK);
+					
 				} else {
 					log.info("존재하지 않는 파일입니다.");
+					return CommResponse.fail(FileFailMessage.NOT_FOUND_FILE);
 				}
 			} else {
 				log.info("등록되지 않는 파일입니다.");
+				return CommResponse.fail(FileFailMessage.NOT_EXIST_FILE);
 			}
 		}
-		
-		return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+		return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
 	}
 	
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
@@ -81,23 +93,35 @@ public class FileContorller {
 			if (!fileService.existFile(fileInfo)) {
 				log.info("도착 {}", fileInfo);
 				fileService.insertFile(fileInfo);
+				return CommResponse.done(true);
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(false).resultCode(CodeMgm.EERROR_FILE_EXIST).resultMessage("서버에 등록된 파일입니다.").build());
+				return CommResponse.done(false, FileFailMessage.EXIST_FILE);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(true).build());
+		return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
 	}
 	
 	@RequestMapping(value = "/exist")
 	public ResponseEntity<?> fileExist(@RequestBody FileMgmDto fileMgmDto) {
 		if (fileMgmDto != null) {
 			if (!fileService.existFile(fileMgmDto)) {
-				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(true).build());
+				return CommResponse.done(true);
 			} else {
-				return ResponseEntity.status(HttpStatus.OK).body(ResultDto.builder().result(false).resultCode(CodeMgm.EERROR_FILE_EXIST).resultMessage("서버에 등록된 파일입니다.").build());
+				return CommResponse.fail(false, FileFailMessage.EXIST_FILE, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-		} else {
-			throw new GlobalException();
 		}
+		return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
+	}
+	
+	@RequestMapping(value = "/exist2")
+	public ResponseEntity<?> fileExist2(@RequestBody FileMgmDto fileMgmDto) {
+		if (fileMgmDto != null) {
+			if (!fileService.existFile2(fileMgmDto)) {
+				return CommResponse.done(true);
+			} else {
+				return CommResponse.done(false, FileFailMessage.EXIST_FILE);
+			}
+		}
+		return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
 	}
 }

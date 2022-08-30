@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils;
+package com.example.practicejpa.utils.other;
 
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;

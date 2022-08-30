@@ -1,13 +1,14 @@
 package com.example.practicejpa.controller;
 
 
-import com.example.practicejpa.dto.ResponseDto;
+import com.example.practicejpa.utils.responseMessage.CommResponse;
 import com.example.practicejpa.handler.ChannelHandler;
 import com.example.practicejpa.service.MenuService;
-import com.example.practicejpa.vo.CodeVo;
-import com.example.practicejpa.vo.MenuVo;
+import com.example.practicejpa.dto.vo.CodeVo;
+import com.example.practicejpa.dto.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,17 +36,17 @@ public class MenuController {
 	HttpSession httpSession;
 	
 	@GetMapping("/get")
-	public ResponseDto<?> getMenu(){
-		return new ResponseDto<>(menuService.getMenuList("MT001"));
+	public ResponseEntity<?> getMenu(){
+		return CommResponse.done(menuService.getMenuList("MT001"));
 	}
 	
 	@GetMapping("/get2")
-	public ResponseDto<?> getMenu2(@RequestParam("menuType") String menuType){
-		return new ResponseDto<>(menuService.getMenuList(menuType));
+	public ResponseEntity<?> getMenu2(@RequestParam("menuType") String menuType){
+		return CommResponse.done(menuService.getMenuList(menuType));
 	}
 	
 	@GetMapping("/get3")
-	public ResponseDto<?> getMenu3(@RequestParam("menuType") String menuType){
+	public ResponseEntity<?> getMenu3(@RequestParam("menuType") String menuType){
 		
 		List<MenuVo> menuList = menuService.getMenuList(menuType);
 		
@@ -66,23 +67,23 @@ public class MenuController {
 			item.setChildCodes(set);
 		});
 		
-		return new ResponseDto<>(collect);
+		return CommResponse.done(collect);
 	}
 	
 	
 	@PutMapping("/update")
-	public ResponseDto<?> updateMenu(){
-		return new ResponseDto<>();
+	public ResponseEntity<?> updateMenu(){
+		return CommResponse.done();
 	}
 	
 	@PostMapping("/insert")
-	public ResponseDto<?> insertMenu(@RequestBody List<MenuVo> menuVos){
+	public ResponseEntity<?> insertMenu(@RequestBody List<MenuVo> menuVos){
 		System.out.println(menuVos);
 		if (menuVos != null && menuVos.size() > 0) {
 			menuService.saveOrUpdate(menuVos);
 		}
 		
-		return new ResponseDto<>();
+		return CommResponse.done();
 	}
 	
 	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -96,12 +97,12 @@ public class MenuController {
 	}
 	
 	@PostMapping(value = "/insertSee")
-	public ResponseDto<?> getSee(@RequestBody List<MenuVo> menuVos){
+	public ResponseEntity<?> getSee(@RequestBody List<MenuVo> menuVos){
 		System.out.println(menuVos);
 		if (menuVos != null && menuVos.size() > 0) {
 			menuService.saveOrUpdateSee(menuVos);
 		}
-		return new ResponseDto<>();
+		return CommResponse.done();
 	}
 	
 	

@@ -1,8 +1,8 @@
 package com.example.practicejpa.dao;
 
-import com.example.practicejpa.modal.Menu;
-import com.example.practicejpa.modal.QMenu;
-import com.example.practicejpa.vo.MenuVo;
+import com.example.practicejpa.model.MenuMgm;
+import com.example.practicejpa.model.QMenu;
+import com.example.practicejpa.dto.vo.MenuVo;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
@@ -17,8 +17,8 @@ public class MenuDao extends BaseJpaEntityDao {
 	public List<MenuVo> getMenuList(String menuType) {
 		QMenu menu = QMenu.menu;
 		
-		List<Menu> fetch = jpaQueryFactory.selectFrom(menu).where(menu.type.eq(menuType))
-		                                  .fetch();
+		List<MenuMgm> fetch = jpaQueryFactory.selectFrom(menu).where(menu.type.eq(menuType))
+		                                     .fetch();
 		
 		System.out.println(fetch);
 		

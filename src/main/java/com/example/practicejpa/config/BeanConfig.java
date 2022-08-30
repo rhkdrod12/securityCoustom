@@ -1,13 +1,12 @@
 package com.example.practicejpa.config;
 
-import com.example.practicejpa.utils.P6spyPrettySqlFormatter;
+import com.example.practicejpa.utils.other.P6spyPrettySqlFormatter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.p6spy.engine.spy.P6SpyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

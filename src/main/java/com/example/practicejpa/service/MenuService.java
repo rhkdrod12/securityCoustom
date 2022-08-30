@@ -1,6 +1,6 @@
 package com.example.practicejpa.service;
 
-import com.example.practicejpa.vo.MenuVo;
+import com.example.practicejpa.dto.vo.MenuVo;
 
 import java.util.Collection;
 import java.util.List;

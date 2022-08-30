@@ -1,28 +1,46 @@
 package com.example.practicejpa.service;
 
 import com.example.practicejpa.dao.FileDao;
-import com.example.practicejpa.modal.FileMgm;
-import com.example.practicejpa.utils.AES256;
-import com.example.practicejpa.vo.FileMgmDto;
+import com.example.practicejpa.dao.repository.FIleRepository;
+import com.example.practicejpa.dto.FileMgmDto;
+import com.example.practicejpa.exception.GlobalException;
+import com.example.practicejpa.model.FileMgm;
+import com.example.practicejpa.utils.code.FileFailMessage;
+import com.example.practicejpa.utils.other.CopyUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 public class FileServiceImpl implements FileService {
 	
 	@Autowired
 	FileDao fileDao;
 	
+	@Autowired
+	FIleRepository fIleRepository;
+	
+	@Override
+	public FileMgm getFileInFoById(long fileId) {
+		return fIleRepository.findByFileId(fileId);
+	}
+	
 	@Override
 	public FileMgm getFileInfo(String fileName) {
 		return fileDao.getFileInfo(fileName);
+	}
+	@Override
+	public List<FileMgmDto> getFileList(String page, String limit) {
+		List<FileMgm> fileList = fileDao.getFileList(page, limit);
+		return CopyUtils.CopyCollection(FileMgmDto.class, fileList);
 	}
 	
 	@Override
@@ -35,10 +53,6 @@ public class FileServiceImpl implements FileService {
 		try {
 			// 나중에 유저 정보 추가하면 유저 ID를 키로 저장하면 되겠지.
 			MultipartFile file = fileMgmDto.getFile();
-			
-			//String saveFileName = AES256.encryptAES256(fileMgmDto.getFileName(), "SYSTEM");
-			//saveFileName = saveFileName.replaceAll("/", "&#47;");
-			
 			String saveFileName = UUID.randomUUID().toString();
 			
 			fileMgmDto.setFileSaveName(saveFileName);
@@ -57,7 +71,8 @@ public class FileServiceImpl implements FileService {
 			insertFile(fileMgm);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.warn(e.getMessage());
+			throw new GlobalException(FileFailMessage.FAIL_SAVE_FILE);
 		}
 	}
 	
@@ -70,4 +85,12 @@ public class FileServiceImpl implements FileService {
 	public boolean existFile(FileMgmDto fileMgmDto) {
 		return fileDao.existFile(fileMgmDto);
 	}
+	
+	@Override
+	public boolean existFile2(FileMgmDto fileMgm) {
+		return fIleRepository.existsFileMgmByFileNameAndFileExt(fileMgm.getFileName(), fileMgm.getFileExt());
+	}
+	
+	
+	
 }

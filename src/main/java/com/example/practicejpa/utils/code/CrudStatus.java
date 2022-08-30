@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils;
+package com.example.practicejpa.utils.code;
 
 import lombok.Getter;
 

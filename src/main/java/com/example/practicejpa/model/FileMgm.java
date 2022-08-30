@@ -1,4 +1,4 @@
-package com.example.practicejpa.modal;
+package com.example.practicejpa.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

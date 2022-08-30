@@ -1,7 +1,7 @@
 package com.example.practicejpa.dao;
 
-import com.example.practicejpa.modal.BaseEntity;
-import com.example.practicejpa.vo.BaseVo;
+import com.example.practicejpa.model.BaseEntity;
+import com.example.practicejpa.dto.vo.BaseVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.Session;
@@ -27,6 +27,8 @@ public class BaseJpaEntityDao {
 	
 	@Autowired
 	ObjectMapper objectMapper;
+	
+	
 	public void flush(){		session.flush();	}
 	public void detach(Object object){session.detach(object);}
 	

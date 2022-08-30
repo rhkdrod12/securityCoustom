@@ -1,4 +1,4 @@
-package com.example.practicejpa.modal;
+package com.example.practicejpa.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,14 +19,14 @@ import javax.persistence.TableGenerator;
 
 @Getter
 @Setter
-@Entity(name = "MENU")
+@Entity(name = "MENU_MGM")
 @Builder
 @ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Menu extends BaseEntity{
+public class MenuMgm extends BaseEntity{
 	// 메뉴PK
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "MENU_GENERATOR")

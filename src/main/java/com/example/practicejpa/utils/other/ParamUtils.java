@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils;
+package com.example.practicejpa.utils.other;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

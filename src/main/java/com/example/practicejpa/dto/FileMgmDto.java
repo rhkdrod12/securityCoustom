@@ -1,17 +1,14 @@
-package com.example.practicejpa.vo;
+package com.example.practicejpa.dto;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.Serializable;
 
 @Builder
 @Getter
@@ -20,8 +17,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
 @ToString
-public class FileMgmDto extends BaseVo{
-	
+public class FileMgmDto{
+	private long fileId;
 	private String fileFullName;
 	private String fileName;
 	private String fileExt;
@@ -32,4 +29,7 @@ public class FileMgmDto extends BaseVo{
 	@ToString.Exclude
 	private MultipartFile file;
 	
+	public String getFileFullName() {
+		return fileFullName == null ? fileName.concat(".").concat(fileExt) : fileFullName;
+	}
 }
