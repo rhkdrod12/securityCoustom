@@ -1,7 +1,7 @@
 package com.example.practicejpa.exception;
 
-import com.example.practicejpa.utils.code.messageInterface.MessageCode;
-import com.example.practicejpa.utils.code.SystemMessage;
+import com.example.practicejpa.utils.codeMessage.messageInterface.MessageCode;
+import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import org.springframework.http.HttpStatus;
 
 public class GlobalException extends RuntimeException {

@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils.code.messageInterface;
+package com.example.practicejpa.utils.codeMessage.messageInterface;
 
 public interface MessageCode {
 	String Code();

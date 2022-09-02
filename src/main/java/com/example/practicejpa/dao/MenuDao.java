@@ -1,8 +1,8 @@
 package com.example.practicejpa.dao;
 
 import com.example.practicejpa.model.MenuMgm;
-import com.example.practicejpa.model.QMenu;
 import com.example.practicejpa.dto.vo.MenuVo;
+import com.example.practicejpa.model.QMenuMgm;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class MenuDao extends BaseJpaEntityDao {
 	
 	public List<MenuVo> getMenuList(String menuType) {
-		QMenu menu = QMenu.menu;
+		QMenuMgm menu = QMenuMgm.menuMgm;
 		
 		List<MenuMgm> fetch = jpaQueryFactory.selectFrom(menu).where(menu.type.eq(menuType))
 		                                     .fetch();
@@ -41,7 +41,7 @@ public class MenuDao extends BaseJpaEntityDao {
 	}
 	
 	public Map<Long, MenuVo> getMenuMap(String menuType) {
-		QMenu menu = QMenu.menu;
+		QMenuMgm menu = QMenuMgm.menuMgm;
 		
 		QBean<MenuVo> bean = Projections.bean(MenuVo.class,
 				menu.menuId,

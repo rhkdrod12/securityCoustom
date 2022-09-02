@@ -1,8 +1,8 @@
 package com.example.practicejpa.controller;
 
-import com.example.practicejpa.utils.responseMessage.CommResponse;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.utils.code.SystemMessage;
+import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.service.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

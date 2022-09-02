@@ -1,7 +1,7 @@
-package com.example.practicejpa.utils.code;
+package com.example.practicejpa.utils.codeMessage;
 
-import com.example.practicejpa.utils.code.messageInterface.FailMessage;
-import com.example.practicejpa.utils.code.messageInterface.SucessMessage;
+import com.example.practicejpa.utils.codeMessage.messageInterface.FailMessage;
+import com.example.practicejpa.utils.codeMessage.messageInterface.SucessMessage;
 
 public enum SystemMessage implements SucessMessage, FailMessage {
 	

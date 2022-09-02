@@ -1,7 +1,7 @@
 package com.example.practicejpa.controller;
 
 
-import com.example.practicejpa.utils.responseMessage.CommResponse;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import com.example.practicejpa.handler.ChannelHandler;
 import com.example.practicejpa.service.MenuService;
 import com.example.practicejpa.dto.vo.CodeVo;

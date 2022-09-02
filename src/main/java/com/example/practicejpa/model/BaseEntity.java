@@ -1,6 +1,6 @@
 package com.example.practicejpa.model;
 
-import com.example.practicejpa.utils.code.CrudStatus;
+import com.example.practicejpa.utils.codeMessage.CrudStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,10 +3,10 @@ package com.example.practicejpa.controller;
 import com.example.practicejpa.dto.FileMgmDto;
 import com.example.practicejpa.model.FileMgm;
 import com.example.practicejpa.service.FileService;
-import com.example.practicejpa.utils.code.FileFailMessage;
-import com.example.practicejpa.utils.code.SystemMessage;
+import com.example.practicejpa.utils.codeMessage.FileFailMessage;
+import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
-import com.example.practicejpa.utils.responseMessage.CommResponse;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -38,7 +38,7 @@ public class FileContorller {
 	
 	@GetMapping("/getFileList")
 	public ResponseEntity<?> fileList(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
-	                                  @RequestParam(name = "limit", required = false, defaultValue = "10") String limit){
+	                                  @RequestParam(name = "pageCount", required = false, defaultValue = "10") String limit){
 		return CommResponse.done(fileService.getFileList(page, limit));
 	}
 	
@@ -95,7 +95,7 @@ public class FileContorller {
 				fileService.insertFile(fileInfo);
 				return CommResponse.done(true);
 			} else {
-				return CommResponse.done(false, FileFailMessage.EXIST_FILE);
+				return CommResponse.fail(false, FileFailMessage.EXIST_FILE);
 			}
 		}
 		return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);

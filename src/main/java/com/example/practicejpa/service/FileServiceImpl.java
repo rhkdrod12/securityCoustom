@@ -5,7 +5,7 @@ import com.example.practicejpa.dao.repository.FIleRepository;
 import com.example.practicejpa.dto.FileMgmDto;
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.model.FileMgm;
-import com.example.practicejpa.utils.code.FileFailMessage;
+import com.example.practicejpa.utils.codeMessage.FileFailMessage;
 import com.example.practicejpa.utils.other.CopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

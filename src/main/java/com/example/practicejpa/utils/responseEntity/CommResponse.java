@@ -1,9 +1,9 @@
-package com.example.practicejpa.utils.responseMessage;
+package com.example.practicejpa.utils.responseEntity;
 
-import com.example.practicejpa.utils.code.SystemMessage;
-import com.example.practicejpa.utils.code.messageInterface.FailMessage;
-import com.example.practicejpa.utils.code.messageInterface.MessageCode;
-import com.example.practicejpa.utils.code.messageInterface.SucessMessage;
+import com.example.practicejpa.utils.codeMessage.SystemMessage;
+import com.example.practicejpa.utils.codeMessage.messageInterface.FailMessage;
+import com.example.practicejpa.utils.codeMessage.messageInterface.MessageCode;
+import com.example.practicejpa.utils.codeMessage.messageInterface.SucessMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
