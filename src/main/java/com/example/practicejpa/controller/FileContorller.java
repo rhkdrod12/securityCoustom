@@ -1,6 +1,7 @@
 package com.example.practicejpa.controller;
 
 import com.example.practicejpa.dto.FileMgmDto;
+import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.model.FileMgm;
 import com.example.practicejpa.service.FileService;
 import com.example.practicejpa.utils.codeMessage.FileFailMessage;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @RestController
@@ -42,6 +48,38 @@ public class FileContorller {
 		return CommResponse.done(fileService.getFileList(page, limit));
 	}
 	
+	@GetMapping(value = "/multiDownload")
+	public void fileMultiDownload(@RequestParam(name = "fileId") long[] fileId, HttpServletResponse response) throws IOException {
+		log.info("파일 멀티 다운로드 요청 {}", fileId);
+		if (ParamUtils.isNotEmpty(fileId)) {
+			List<FileMgm> fileList = fileService.getFileInFoById(fileId);
+			
+			if(fileList != null && fileList.size() > 0){
+				// 파일을 내려보내기 위한 헤더설정
+				response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+				response.setHeader("Content-Disposition", "attachment;filename=mutiFile.zip");
+				
+				// 입력받은 zipEntry들을 모아 하나의 zip을 만들어내는 stream
+				ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+				for (FileMgm fileMgm : fileList) {
+					FileInputStream fileInputStream = new FileInputStream(fileMgm.getFilePath());
+					// 입력한 이름으로 압축 파일 내 파일 생성
+					zipOutputStream.putNextEntry(new ZipEntry(fileMgm.getFileName() + "." + fileMgm.getFileExt()));
+					// 파일 내용을 zipOutStream으로 옮김 -> 현재 설정된 zipEntry쪽으로 데이터가 옮겨짐
+					StreamUtils.copy(fileInputStream, zipOutputStream);
+					fileInputStream.close();
+					zipOutputStream.closeEntry();
+				}
+				// close 및 입력받은 outputSream으로 값을 내보냄 -> response의 output를 넣어줬으니 클라이언트 쪽으로 값을 내려보냄
+				zipOutputStream.finish();
+				
+			}else{
+				throw new GlobalException(FileFailMessage.NOT_FOUND_FILE);
+			}
+		}else{
+			throw new GlobalException(SystemMessage.NOT_EXIST_PARAM);
+		}
+	}
 	
 	@GetMapping(value = "/download")
 	public ResponseEntity<Object> fileDownload(@RequestParam(name = "fileId" , defaultValue = "-1") long fileId) throws IOException {

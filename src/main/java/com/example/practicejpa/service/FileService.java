@@ -9,6 +9,8 @@ public interface FileService {
 	
 	FileMgm getFileInFoById(long fileId);
 	
+	List<FileMgm> getFileInFoById(long[] fileId);
+	
 	FileMgm getFileInfo(String fileName);
 	
 	void insertFile(FileMgm fileMgm);
@@ -22,4 +24,5 @@ public interface FileService {
 	boolean existFile2(FileMgmDto fileMgm);
 	
 	List<FileMgmDto> getFileList(String page, String limit);
+	
 }

@@ -32,6 +32,9 @@ public class FileServiceImpl implements FileService {
 	public FileMgm getFileInFoById(long fileId) {
 		return fIleRepository.findByFileId(fileId);
 	}
+	public List<FileMgm> getFileInFoById(long[] fileId) {
+		return fIleRepository.findByFileIdIn(fileId);
+	}
 	
 	@Override
 	public FileMgm getFileInfo(String fileName) {
