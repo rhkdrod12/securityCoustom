@@ -14,8 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +42,12 @@ public class FileServiceImpl implements FileService {
 	public FileMgm getFileInfo(String fileName) {
 		return fileDao.getFileInfo(fileName);
 	}
+	
+	@Override
+	public void deleteFileById(long[] fileId) {
+		fIleRepository.deleteAllByIdInBatch(Arrays.stream(fileId).boxed().collect(Collectors.toSet()));
+	}
+	
 	@Override
 	public List<FileMgmDto> getFileList(String page, String limit) {
 		List<FileMgm> fileList = fileDao.getFileList(page, limit);

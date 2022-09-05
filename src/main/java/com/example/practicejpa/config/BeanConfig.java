@@ -58,6 +58,7 @@ public class BeanConfig {
 		P6SpyOptions.getActiveInstance().setLogMessageFormat(P6spyPrettySqlFormatter.class.getName());
 	}
 	
+	// 파일 다운로드용 (이것저것 설정이 걸려있음 아니면 용량설정 및 기타 설정 다 해야함)
 	@Bean
 	public MultipartResolver multipartResolver(){
 		return new CommonsMultipartResolver();

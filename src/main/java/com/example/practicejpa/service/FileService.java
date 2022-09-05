@@ -13,6 +13,8 @@ public interface FileService {
 	
 	FileMgm getFileInfo(String fileName);
 	
+	void deleteFileById(long[] fileId);
+	
 	void insertFile(FileMgm fileMgm);
 	
 	void insertFile(FileMgmDto fileMgm);

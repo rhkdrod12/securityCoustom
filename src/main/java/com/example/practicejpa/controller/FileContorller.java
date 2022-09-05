@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,18 @@ public class FileContorller {
 	                                  @RequestParam(name = "pageCount", required = false, defaultValue = "10") String limit){
 		return CommResponse.done(fileService.getFileList(page, limit));
 	}
+	
+	
+	@DeleteMapping("/deleteFileList")
+	public ResponseEntity<?> deleteFileList(@RequestParam(name = "fileId") long[] fileId){
+		if(fileId.length > 0){
+			fileService.deleteFileById(fileId);
+			return CommResponse.done(null);
+		}else{
+			return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
+		}
+	}
+	
 	
 	@GetMapping(value = "/multiDownload")
 	public void fileMultiDownload(@RequestParam(name = "fileId") long[] fileId, HttpServletResponse response) throws IOException {
