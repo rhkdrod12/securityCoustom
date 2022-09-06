@@ -9,6 +9,7 @@ public interface MenuService {
 	
 	List<MenuVo> getMenuList(String menuType);
 	
+	List<MenuVo> getAllMenuList();
 	
 	void save(MenuVo menuVo);
 	

@@ -1,11 +1,11 @@
 package com.example.practicejpa.controller;
 
 
-import com.example.practicejpa.utils.responseEntity.CommResponse;
-import com.example.practicejpa.handler.ChannelHandler;
-import com.example.practicejpa.service.MenuService;
 import com.example.practicejpa.dto.vo.CodeVo;
 import com.example.practicejpa.dto.vo.MenuVo;
+import com.example.practicejpa.handler.ChannelHandler;
+import com.example.practicejpa.service.MenuService;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +57,18 @@ public class MenuController {
 	                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString(): null)
 	                                                           .build()).collect(Collectors.toList());
 		
+		class NumberCompare{
+			int value = Integer.MAX_VALUE;
+			public int getValue() {
+				return value;
+			}
+			public void setValue(int value){
+				this.value = Integer.min(this.value, value);
+			}
+		}
+		
+		NumberCompare numberCompare = new NumberCompare();
+		
 		collect.forEach(item->{
 			Set<CodeVo> set = new LinkedHashSet<>();
 			collect.stream().filter(item2->item2.getUpperCode() != null).forEach(item2->{
@@ -65,9 +77,55 @@ public class MenuController {
 				}
 			});
 			item.setChildCodes(set);
+			numberCompare.setValue(item.getCodeDepth());
 		});
 		
-		return CommResponse.done(collect);
+		List<CodeVo> result = collect.stream()
+		                             .filter(item -> item.getCodeDepth() == numberCompare.getValue())
+		                             .collect(Collectors.toList());
+		
+		return CommResponse.done(result);
+	}
+	
+	@GetMapping("/getAllMenu")
+	public ResponseEntity<?> getAllMenu(){
+		List<MenuVo> menuList = menuService.getAllMenuList();
+		
+		List<CodeVo> collect = menuList.stream().map(item -> CodeVo.builder()
+		                                                           .code(item.getMenuId().toString())
+		                                                           .codeDepth(item.getMenuDepth())
+		                                                           .codeName(item.getName())
+		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString(): null)
+		                                                           .build()).collect(Collectors.toList());
+		
+		class NumberCompare{
+			int value = Integer.MAX_VALUE;
+			public int getValue() {
+				return value;
+			}
+			public void setValue(int value){
+				this.value = Integer.min(this.getValue(), value);
+			}
+		}
+		
+		NumberCompare numberCompare = new NumberCompare();
+		
+		collect.forEach(item->{
+			Set<CodeVo> set = new LinkedHashSet<>();
+			collect.stream().filter(item2->item2.getUpperCode() != null).forEach(item2->{
+				if(item.getCode().equals(item2.getUpperCode())){
+					set.add(item2);
+				}
+			});
+			item.setChildCodes(set);
+			numberCompare.setValue(item.getCodeDepth());
+		});
+		
+		List<CodeVo> result = collect.stream()
+		                             .filter(item -> item.getCodeDepth() == numberCompare.getValue())
+		                             .collect(Collectors.toList());
+		
+		return CommResponse.done(result);
 	}
 	
 	

@@ -31,6 +31,10 @@ public class MenuServiceImpl implements MenuService {
 		return menuList;
 	}
 	
+	public List<MenuVo> getAllMenuList() {
+		return menuDao.getAllMenuList();
+	}
+	
 	@Override
 	public void save(MenuVo menuVo) {
 		menuDao.save(menuVo, MenuMgm.class);
