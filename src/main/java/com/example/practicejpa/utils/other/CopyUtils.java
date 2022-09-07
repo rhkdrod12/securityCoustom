@@ -27,7 +27,7 @@ public class CopyUtils {
 	 * @return
 	 */
 	static public <T> T CopyObject(Class<T> clz, Object obj) {
-		return objectMapper.convertValue(obj, clz);
+		return obj!=null? objectMapper.convertValue(obj, clz) : null;
 	}
 	
 	/**

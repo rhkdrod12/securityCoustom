@@ -4,6 +4,7 @@ package com.example.practicejpa.controller;
 import com.example.practicejpa.dto.vo.CodeVo;
 import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.handler.ChannelHandler;
+import com.example.practicejpa.model.MenuMgm;
 import com.example.practicejpa.service.MenuService;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,12 @@ public class MenuController {
 		return CommResponse.done(menuService.getMenuList(menuType));
 	}
 	
+	@GetMapping("/getMenu")
+	public ResponseEntity<?> getMenu(@RequestParam("menuId") long menuId){
+		return CommResponse.done(menuService.getMenuById(menuId));
+	} 
+	
+	
 	@GetMapping("/get3")
 	public ResponseEntity<?> getMenu3(@RequestParam("menuType") String menuType){
 		
@@ -67,7 +74,6 @@ public class MenuController {
 			}
 		}
 		
-		NumberCompare numberCompare = new NumberCompare();
 		
 		collect.forEach(item->{
 			Set<CodeVo> set = new LinkedHashSet<>();
@@ -77,14 +83,10 @@ public class MenuController {
 				}
 			});
 			item.setChildCodes(set);
-			numberCompare.setValue(item.getCodeDepth());
 		});
 		
-		List<CodeVo> result = collect.stream()
-		                             .filter(item -> item.getCodeDepth() == numberCompare.getValue())
-		                             .collect(Collectors.toList());
 		
-		return CommResponse.done(result);
+		return CommResponse.done(collect);
 	}
 	
 	@GetMapping("/getAllMenu")
@@ -108,7 +110,6 @@ public class MenuController {
 			}
 		}
 		
-		NumberCompare numberCompare = new NumberCompare();
 		
 		collect.forEach(item->{
 			Set<CodeVo> set = new LinkedHashSet<>();
@@ -118,14 +119,9 @@ public class MenuController {
 				}
 			});
 			item.setChildCodes(set);
-			numberCompare.setValue(item.getCodeDepth());
 		});
 		
-		List<CodeVo> result = collect.stream()
-		                             .filter(item -> item.getCodeDepth() == numberCompare.getValue())
-		                             .collect(Collectors.toList());
-		
-		return CommResponse.done(result);
+		return CommResponse.done(collect);
 	}
 	
 	
