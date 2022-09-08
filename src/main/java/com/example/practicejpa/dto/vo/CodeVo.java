@@ -17,4 +17,5 @@ public class CodeVo {
 	int codeDepth = 0;
 	Set<CodeVo> childCodes;
 	String upperCode;
+	Object data;
 }

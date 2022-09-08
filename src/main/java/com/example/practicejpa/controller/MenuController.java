@@ -4,7 +4,6 @@ package com.example.practicejpa.controller;
 import com.example.practicejpa.dto.vo.CodeVo;
 import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.handler.ChannelHandler;
-import com.example.practicejpa.model.MenuMgm;
 import com.example.practicejpa.service.MenuService;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,48 +36,51 @@ public class MenuController {
 	HttpSession httpSession;
 	
 	@GetMapping("/get")
-	public ResponseEntity<?> getMenu(){
+	public ResponseEntity<?> getMenu() {
 		return CommResponse.done(menuService.getMenuList("MT001"));
 	}
 	
 	@GetMapping("/get2")
-	public ResponseEntity<?> getMenu2(@RequestParam("menuType") String menuType){
+	public ResponseEntity<?> getMenu2(@RequestParam("menuType") String menuType) {
 		return CommResponse.done(menuService.getMenuList(menuType));
 	}
 	
 	@GetMapping("/getMenu")
-	public ResponseEntity<?> getMenu(@RequestParam("menuId") long menuId){
+	public ResponseEntity<?> getMenu(@RequestParam("menuId") long menuId) {
 		return CommResponse.done(menuService.getMenuById(menuId));
-	} 
+	}
 	
 	
 	@GetMapping("/get3")
-	public ResponseEntity<?> getMenu3(@RequestParam("menuType") String menuType){
+	public ResponseEntity<?> getMenu3(@RequestParam("menuType") String menuType) {
 		
 		List<MenuVo> menuList = menuService.getMenuList(menuType);
 		
 		List<CodeVo> collect = menuList.stream().map(item -> CodeVo.builder()
-	                                                           .code(item.getMenuId().toString())
-	                                                           .codeDepth(item.getMenuDepth())
-	                                                           .codeName(item.getName())
-	                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString(): null)
-	                                                           .build()).collect(Collectors.toList());
+		                                                           .code(item.getMenuId().toString())
+		                                                           .codeDepth(item.getMenuDepth())
+		                                                           .codeName(item.getName())
+		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString() : null)
+		                                                           .data(item)
+		                                                           .build()).collect(Collectors.toList());
 		
-		class NumberCompare{
+		class NumberCompare {
 			int value = Integer.MAX_VALUE;
+			
 			public int getValue() {
 				return value;
 			}
-			public void setValue(int value){
+			
+			public void setValue(int value) {
 				this.value = Integer.min(this.value, value);
 			}
 		}
 		
 		
-		collect.forEach(item->{
+		collect.forEach(item -> {
 			Set<CodeVo> set = new LinkedHashSet<>();
-			collect.stream().filter(item2->item2.getUpperCode() != null).forEach(item2->{
-				if(item.getCode().equals(item2.getUpperCode())){
+			collect.stream().filter(item2 -> item2.getUpperCode() != null).forEach(item2 -> {
+				if (item.getCode().equals(item2.getUpperCode())) {
 					set.add(item2);
 				}
 			});
@@ -90,31 +92,34 @@ public class MenuController {
 	}
 	
 	@GetMapping("/getAllMenu")
-	public ResponseEntity<?> getAllMenu(){
+	public ResponseEntity<?> getAllMenu() {
 		List<MenuVo> menuList = menuService.getAllMenuList();
 		
 		List<CodeVo> collect = menuList.stream().map(item -> CodeVo.builder()
 		                                                           .code(item.getMenuId().toString())
 		                                                           .codeDepth(item.getMenuDepth())
 		                                                           .codeName(item.getName())
-		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString(): null)
+		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString() : null)
+		                                                           .data(item)
 		                                                           .build()).collect(Collectors.toList());
 		
-		class NumberCompare{
+		class NumberCompare {
 			int value = Integer.MAX_VALUE;
+			
 			public int getValue() {
 				return value;
 			}
-			public void setValue(int value){
+			
+			public void setValue(int value) {
 				this.value = Integer.min(this.getValue(), value);
 			}
 		}
 		
 		
-		collect.forEach(item->{
+		collect.forEach(item -> {
 			Set<CodeVo> set = new LinkedHashSet<>();
-			collect.stream().filter(item2->item2.getUpperCode() != null).forEach(item2->{
-				if(item.getCode().equals(item2.getUpperCode())){
+			collect.stream().filter(item2 -> item2.getUpperCode() != null).forEach(item2 -> {
+				if (item.getCode().equals(item2.getUpperCode())) {
 					set.add(item2);
 				}
 			});
@@ -126,12 +131,12 @@ public class MenuController {
 	
 	
 	@PutMapping("/update")
-	public ResponseEntity<?> updateMenu(){
+	public ResponseEntity<?> updateMenu() {
 		return CommResponse.done();
 	}
 	
 	@PostMapping("/insert")
-	public ResponseEntity<?> insertMenu(@RequestBody List<MenuVo> menuVos){
+	public ResponseEntity<?> insertMenu(@RequestBody List<MenuVo> menuVos) {
 		System.out.println(menuVos);
 		if (menuVos != null && menuVos.size() > 0) {
 			menuService.saveOrUpdate(menuVos);
@@ -141,7 +146,7 @@ public class MenuController {
 	}
 	
 	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<MenuVo> fluxTest(){
+	public Flux<MenuVo> fluxTest() {
 		
 		//Sinks.Many<MenuVo> many = Sinks.many().multicast().directAllOrNothing();
 		System.out.println("ID: " + httpSession.getId());
@@ -151,15 +156,13 @@ public class MenuController {
 	}
 	
 	@PostMapping(value = "/insertSee")
-	public ResponseEntity<?> getSee(@RequestBody List<MenuVo> menuVos){
+	public ResponseEntity<?> getSee(@RequestBody List<MenuVo> menuVos) {
 		System.out.println(menuVos);
 		if (menuVos != null && menuVos.size() > 0) {
 			menuService.saveOrUpdateSee(menuVos);
 		}
 		return CommResponse.done();
 	}
-	
-	
 	
 	
 }
