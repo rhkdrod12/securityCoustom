@@ -1,7 +1,7 @@
 package com.example.practicejpa.dto.vo;
 
+import com.example.practicejpa.utils.other.JSONRefGenerator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +15,8 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class)
+@JsonIdentityInfo(generator = JSONRefGenerator.class)
 public class MenuVo extends BaseVo{
-	
 	Long menuId;
 	String type;
 	String category;

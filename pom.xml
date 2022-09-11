@@ -134,7 +134,13 @@
         <!--     <artifactId>spring-context-support</artifactId> -->
         <!--     <version>5.3.19</version> -->
         <!-- </dependency> -->
-
+        <!-- JSON 변환시 하위객체 연결 문제 해결용 -->
+        <dependency>
+            <groupId>com.voodoodyne.jackson.jsog</groupId>
+            <artifactId>jackson-jsog</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     
     <build>

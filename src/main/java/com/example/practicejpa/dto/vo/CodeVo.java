@@ -1,5 +1,7 @@
 package com.example.practicejpa.dto.vo;
 
+import com.example.practicejpa.utils.other.JSONRefGenerator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIdentityInfo(generator = JSONRefGenerator.class)
 public class CodeVo {
 	String code;
 	String codeName;
