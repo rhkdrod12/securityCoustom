@@ -14,4 +14,5 @@ public interface CodeRepository extends JpaRepository<CodeMgm, String> {
 	List<CodeMgm> findByCode(String code);
 	
 	List<CodeMgm> findByUpperCodeCode(String upperCode);
+	
 }
