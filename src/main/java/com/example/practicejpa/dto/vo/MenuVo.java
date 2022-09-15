@@ -25,5 +25,4 @@ public class MenuVo extends BaseVo{
 	Long upperMenu;
 	int menuDepth;
 	int menuOrder;
-	ArrayList<MenuVo> childMenu = new ArrayList<>();
 }

@@ -94,39 +94,7 @@ public class MenuController {
 	@GetMapping("/getAllMenu")
 	public ResponseEntity<?> getAllMenu() {
 		List<MenuVo> menuList = menuService.getAllMenuList();
-		
-		List<CodeVo> collect = menuList.stream().map(item -> CodeVo.builder()
-		                                                           .code(item.getMenuId().toString())
-		                                                           .codeDepth(item.getMenuDepth())
-		                                                           .codeName(item.getName())
-		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString() : null)
-		                                                           .data(item)
-		                                                           .build()).collect(Collectors.toList());
-		
-		class NumberCompare {
-			int value = Integer.MAX_VALUE;
-			
-			public int getValue() {
-				return value;
-			}
-			
-			public void setValue(int value) {
-				this.value = Integer.min(this.getValue(), value);
-			}
-		}
-		
-		
-		collect.forEach(item -> {
-			Set<CodeVo> set = new LinkedHashSet<>();
-			collect.stream().filter(item2 -> item2.getUpperCode() != null).forEach(item2 -> {
-				if (item.getCode().equals(item2.getUpperCode())) {
-					set.add(item2);
-				}
-			});
-			item.setChildCodes(set);
-		});
-		
-		return CommResponse.done(collect);
+		return CommResponse.done(menuList);
 	}
 	
 	
