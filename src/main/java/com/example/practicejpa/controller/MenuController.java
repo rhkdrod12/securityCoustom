@@ -115,7 +115,6 @@ public class MenuController {
 	
 	@GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<MenuVo> fluxTest() {
-		
 		//Sinks.Many<MenuVo> many = Sinks.many().multicast().directAllOrNothing();
 		System.out.println("ID: " + httpSession.getId());
 		System.out.println("sse 진입");
@@ -131,6 +130,5 @@ public class MenuController {
 		}
 		return CommResponse.done();
 	}
-	
 	
 }
