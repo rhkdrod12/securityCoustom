@@ -34,9 +34,12 @@ public class ChatController {
 				           System.out.println("처음시작?");
 				           sink.tryEmitNext("유저가 참여하였습니다.");
 			           })
+				       .doOnCancel(() -> {
+					       sink.tryEmitNext("유저가 나갔습니다2.");
+				       })
 			           .doFinally(signalType -> {
 				           if (SignalType.CANCEL.equals(signalType)) {
-					           System.out.println("취소 요청임");
+					           System.out.println("취소 요청임 해당 유저의 마지막임");
 				           }
 				           System.out.println("테스트 마지막");
 				           System.out.println(signalType);

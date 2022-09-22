@@ -1,7 +1,6 @@
 package com.example.practicejpa.controller;
 
 
-import com.example.practicejpa.dto.vo.CodeVo;
 import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.handler.ChannelHandler;
 import com.example.practicejpa.handler.SinksHandler;
@@ -22,11 +21,7 @@ import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.Flux;
 
 import javax.servlet.http.HttpSession;
-import java.time.Duration;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/menu")
@@ -62,39 +57,7 @@ public class MenuController {
 		
 		List<MenuVo> menuList = menuService.getMenuList(menuType);
 		
-		List<CodeVo> collect = menuList.stream().map(item -> CodeVo.builder()
-		                                                           .code(item.getMenuId().toString())
-		                                                           .codeDepth(item.getMenuDepth())
-		                                                           .codeName(item.getName())
-		                                                           .upperCode(item.getUpperMenu() != null ? item.getUpperMenu().toString() : null)
-		                                                           .data(item)
-		                                                           .build()).collect(Collectors.toList());
-		
-		class NumberCompare {
-			int value = Integer.MAX_VALUE;
-			
-			public int getValue() {
-				return value;
-			}
-			
-			public void setValue(int value) {
-				this.value = Integer.min(this.value, value);
-			}
-		}
-		
-		
-		collect.forEach(item -> {
-			Set<CodeVo> set = new LinkedHashSet<>();
-			collect.stream().filter(item2 -> item2.getUpperCode() != null).forEach(item2 -> {
-				if (item.getCode().equals(item2.getUpperCode())) {
-					set.add(item2);
-				}
-			});
-			item.setChildCodes(set);
-		});
-		
-		
-		return CommResponse.done(collect);
+		return CommResponse.done(menuList);
 	}
 	
 	@GetMapping("/getAllMenu")
