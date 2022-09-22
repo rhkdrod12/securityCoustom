@@ -3,12 +3,14 @@ package com.example.practicejpa.service;
 import com.example.practicejpa.dao.MenuDao;
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.handler.ChannelHandler;
+import com.example.practicejpa.handler.SinksHandler;
 import com.example.practicejpa.model.BaseEntity;
 import com.example.practicejpa.model.MenuMgm;
 import com.example.practicejpa.dao.repository.MenuRepository;
 import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.CopyUtils;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class MenuServiceImpl implements MenuService {
 	MenuRepository menuRepository;
 	@Autowired
 	ChannelHandler channelHandler;
+	@Autowired
+	SinksHandler sinksHandler;
 	
 	@Override
 	public List<MenuVo> getMenuList(String menuType) {
@@ -67,10 +71,12 @@ public class MenuServiceImpl implements MenuService {
 	
 	@Override
 	public void saveOrUpdateSee(Collection<MenuVo> menuVos) {
+		// List<MenuVo> menuVos1 = this.saveOrUpdate(menuVos);
+		// menuVos1.forEach(item ->{
+		// 	channelHandler.getSink().tryEmitNext(item);
+		// });
 		List<MenuVo> menuVos1 = this.saveOrUpdate(menuVos);
-		menuVos1.forEach(item ->{
-			channelHandler.getSink().tryEmitNext(item);
-		});
+		menuVos1.forEach(sinksHandler::tryEmitNext);
 		System.out.println("구독자 수: " + channelHandler.getSink().currentSubscriberCount());
 	}
 }

@@ -19,7 +19,7 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	 * OTHER        O   기타
 	 *
 	 * 2은 재요청시(파라미터 변경이라든지, 나중에 재요청한다면) 복구 여부가능 여부
-	 * ANYTHING     A   상관없음 -> 정상처리된경우 사용
+	 * ANYTHING     A   상관없음   ->정상처리된경우 사용
 	 * POSSIBLE     P   가능       ->에러시
 	 * CRITICAL     C   불가능     ->에러시
 	 *
@@ -30,12 +30,17 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	 */
 	
 	// 성공관련
+	HEART_BEAT("SA0000", ""),
 	SUCCUES_REQUEST("SA0001", "정상적으로 처리되었습니다"),
+	
 	
 	// 실패관련
 	ERROR_REQUEST_FAIL("EC0001", "처리 중 오류가 발생하였습니다"),
 	ERROR_NETWORK("EC0002", "네트워크에 문제가 발생하였습니다."),
-	NOT_EXIST_PARAM("EP0001", "필수 파라미터가 누럭되었습니다."),
+	
+	NOT_EXIST_PARAM("EP0001", "필수 파라미터가 누락되었습니다."),
+	NOT_EXIST_DATA("EP0002", "존재하지 않는 데이터입니다."),
+	
 	
 	// 기타 관련
 	CANCEL_REQUEST("OA0001", "취소요청이 발생하였습니다."),

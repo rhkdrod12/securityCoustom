@@ -54,7 +54,7 @@ public class FileContorller {
 	public ResponseEntity<?> deleteFileList(@RequestParam(name = "fileId") long[] fileId){
 		if(fileId.length > 0){
 			fileService.deleteFileById(fileId);
-			return CommResponse.done(null);
+			return CommResponse.done();
 		}else{
 			return CommResponse.fail(SystemMessage.NOT_EXIST_PARAM);
 		}
