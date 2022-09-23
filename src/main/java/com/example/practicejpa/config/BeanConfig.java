@@ -17,6 +17,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
+
 @Configuration
 public class BeanConfig {
 	
@@ -28,6 +29,7 @@ public class BeanConfig {
 	
 	@Bean
 	ObjectMapper objectMapper(){
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(hibernate5Module());
 		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);

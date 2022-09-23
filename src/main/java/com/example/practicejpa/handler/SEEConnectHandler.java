@@ -11,48 +11,59 @@ import java.util.function.Consumer;
  * 이건 SSE 형태로 사용했을 떄의 구조이고
  * WebSocket형태로 사용해봅시다.
  */
-public class ChatHandler {
+public class SEEConnectHandler {
 	
-	public static final Map<String, ChatSink> sinkMap = new HashMap<>();
+	public static final Map<String, SSESink> sinkMap = new HashMap<>();
 	
 	private static final Consumer<String> callback = id -> {
-		ChatSink chatSink = sinkMap.get(id);
+		SSESink chatSink = sinkMap.get(id);
 		// 구독자 수가 0이면 제거 맵에서 제거
 		if (chatSink != null ) {
 			if(chatSink.getSink().currentSubscriberCount() == 0){
-				System.out.println("제거 요청");
 				sinkMap.remove(id);
 			}
-			// else{
-			// 	chatSink.tryEmitNext("유저가 나갔습니다.");
-			// }
 		}else{
 			throw new GlobalException(SystemMessage.ERROR_REQUEST_FAIL);
 		}
 	};
 	
-	
+	// 연결번호 ID
 	private static long chatIdIdx = 1;
 	
+	/**
+	 * 연결정보 생성 (연결ID와 Sink를 반환)
+	 * @return 
+	 */
 	public static SinkResult createSink() {
-		// 이렇게 하면 매번 테스트하기 힘드니까 임시로 Long으로 처리
-		// String uuid = UUID.randomUUID().toString();
-		// ChatSink chatSink = new ChatSink(uuid, callback);
-		// sinkMap.put(uuid, chatSink);
-		// return new SinkResult(uuid, chatSink);
-		
 		// 채팅방 ID부여 및 ID번호 증가
 		String chatId = String.valueOf(chatIdIdx++);
 		// ChatSink 생성 및 반환
-		return new SinkResult(chatId, sinkMap.put(chatId, new ChatSink(chatId, callback)));
+		return new SinkResult(chatId, sinkMap.put(chatId, new SSESink(chatId, callback)));
 	}
-	public static ChatSink getSink(String id) {
+	
+	/**
+	 * 연결정보 반환
+	 * @param id
+	 * @return
+	 */
+	public static SSESink getSink(String id) {
 		return sinkMap.get(id);
 	}
+	
+	/**
+	 * 연결ID에 해당하는 연결정보 존재 여부
+	 * @param id
+	 * @return
+	 */
 	public static boolean isSink(String id) {
 		return sinkMap.containsKey(id);
 	}
 	
+	/**
+	 * 연결ID에 해당하는 연결정보 삭제
+	 * @param id
+	 * @return
+	 */
 	public static boolean removeSink(String id) {
 		return sinkMap.remove(id) != null;
 	}

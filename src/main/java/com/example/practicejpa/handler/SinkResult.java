@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SinkResult{
 	String id;
-	ChatSink chatSink;
+	SSESink chatSink;
 }
