@@ -97,7 +97,7 @@ public class MenuController {
 		                   //     System.out.println(o);
 		                   // })
 		                   // .timeout(Duration.ofSeconds(5))
-		                   .onErrorReturn(CommResponse.fail(SystemMessage.ERROR_REQUEST_FAIL))
+		                   .onErrorReturn(CommResponse.fail(SystemMessage.REQUEST_FAIL))
 		// .onErrorMap(throwable -> {
 		//     throw new GlobalException("에러에러에러");
 		// })

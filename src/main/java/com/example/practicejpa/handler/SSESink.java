@@ -39,7 +39,7 @@ public class SSESink {
 	public Flux<ResponseEntity<?>> getFlux() {
 		return this.asFlux()
 		           .onBackpressureBuffer(999, (result) -> System.out.printf("%s overflow%n", result.getBody()), BufferOverflowStrategy.DROP_LATEST)
-		           .onErrorReturn(CommResponse.fail(SystemMessage.ERROR_REQUEST_FAIL));
+		           .onErrorReturn(CommResponse.fail(SystemMessage.REQUEST_FAIL));
 	}
 	
 	public Flux<ResponseEntity<String>> getHeartbeatStream() {

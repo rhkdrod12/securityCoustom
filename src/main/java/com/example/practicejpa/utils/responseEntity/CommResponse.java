@@ -26,8 +26,9 @@ public class CommResponse {
 	}
 	static public ResponseEntity<Object> done(Object result, MessageCode messageCode, HttpStatus httpStatus) {return ResponseEntity.status(httpStatus).body(ResultMessage.done(result, messageCode));}
 	
-	static public ResponseEntity<Object> fail(){return ResponseEntity.badRequest().body(ResultMessage.fail(false,SystemMessage.ERROR_REQUEST_FAIL));}
+	static public ResponseEntity<Object> fail(){return ResponseEntity.badRequest().body(ResultMessage.fail(false,SystemMessage.REQUEST_FAIL));}
 	static public ResponseEntity<Object> fail(FailMessage failMessage){return ResponseEntity.badRequest().body(ResultMessage.fail(false, failMessage));}
+	static public ResponseEntity<Object> fail(FailMessage failMessage, HttpStatus httpStatus){return ResponseEntity.status(httpStatus).body(ResultMessage.fail(false, failMessage));}
 	
 	static public ResponseEntity<Object> fail(Object result){return ResponseEntity.badRequest().body(ResultMessage.fail(result));}
 	static public ResponseEntity<Object> fail(Object result, FailMessage failMessage) {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}

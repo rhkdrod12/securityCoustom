@@ -4,6 +4,10 @@ server:
     context-path: /
     encoding:
       charset: utf-8
+  
+jwtProvider:
+  expireTime: 900
+
 
 #  http2:
 #    enabled: true

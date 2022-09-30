@@ -23,7 +23,7 @@ public class SEEConnectHandler {
 				sinkMap.remove(id);
 			}
 		}else{
-			throw new GlobalException(SystemMessage.ERROR_REQUEST_FAIL);
+			throw new GlobalException(SystemMessage.REQUEST_FAIL);
 		}
 	};
 	

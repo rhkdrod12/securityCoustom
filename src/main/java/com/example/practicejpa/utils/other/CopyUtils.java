@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CopyUtils {
@@ -17,6 +18,14 @@ public class CopyUtils {
 		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+	}
+	
+	static public Map<String, Object> convertMap(Object object) {
+		return objectMapper.convertValue(object, Map.class);
+	}
+	
+	static public <T> T convertObject(Map<String, Object> map, Class<T> clz) {
+		return objectMapper.convertValue(map, clz);
 	}
 	
 	/**

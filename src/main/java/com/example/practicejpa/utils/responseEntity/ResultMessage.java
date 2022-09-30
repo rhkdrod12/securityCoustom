@@ -25,15 +25,23 @@ public class ResultMessage {
 	static public ResultMessage done(Object result, SucessMessage messageCode) {
 		return new ResultMessage(result, messageCode.Code(), messageCode.Message());
 	}
+	
+	static public ResultMessage done(SucessMessage messageCode) {
+		return new ResultMessage(true, messageCode.Code(), messageCode.Message());
+	}
+	
 	static public ResultMessage done(Object result, MessageCode messageCode) {
 		return new ResultMessage(result, messageCode.Code(), messageCode.Message());
 	}
 	// 실패시 결과값 전송용
 	static public ResultMessage fail(Object result) {
-		return new ResultMessage(result, SystemMessage.ERROR_REQUEST_FAIL.Code(), SystemMessage.ERROR_REQUEST_FAIL.Message());
+		return new ResultMessage(result, SystemMessage.REQUEST_FAIL.Code(), SystemMessage.REQUEST_FAIL.Message());
 	}
 	static public ResultMessage fail(Object result, FailMessage messageCode) {
 		return new ResultMessage(result, messageCode.Code(), messageCode.Message());
+	}
+	static public ResultMessage fail(FailMessage messageCode) {
+		return new ResultMessage(false, messageCode.Code(), messageCode.Message());
 	}
 	static public ResultMessage fail(Object result, MessageCode messageCode) {
 		return new ResultMessage(result, messageCode.Code(), messageCode.Message());

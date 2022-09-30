@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 
 public class GlobalException extends RuntimeException {
 	
-	private String code = SystemMessage.ERROR_REQUEST_FAIL.Code();
-	private String message = SystemMessage.ERROR_REQUEST_FAIL.Message();
+	private String code = SystemMessage.REQUEST_FAIL.Code();
+	private String message = SystemMessage.REQUEST_FAIL.Message();
 	private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 	
 	public GlobalException() {

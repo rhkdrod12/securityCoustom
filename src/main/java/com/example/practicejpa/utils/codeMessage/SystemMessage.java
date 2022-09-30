@@ -18,7 +18,7 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	 * ERROR        E   서버에서 발생한 예외를 의미
 	 * OTHER        O   기타
 	 *
-	 * 2은 재요청시(파라미터 변경이라든지, 나중에 재요청한다면) 복구 여부가능 여부
+	 * 2은 재요청시(파라미터 변경이라든지, 나중에 재요청한다면 - 클라이언트에서 처리하면) 복구 여부가능 여부
 	 * ANYTHING     A   상관없음   ->정상처리된경우 사용
 	 * POSSIBLE     P   가능       ->에러시
 	 * CRITICAL     C   불가능     ->에러시
@@ -32,18 +32,27 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	// 성공관련
 	HEART_BEAT("SA0000", ""),
 	SUCCUES_REQUEST("SA0001", "정상적으로 처리되었습니다"),
-	
+	SUCCUES_LOGIN("SA0002", "로그인에 성공하였습니다"),
+	SUCCUES_LOGOUT("SA0003", "로그아웃에 성공하였습니다"),
 	
 	// 실패관련
-	ERROR_REQUEST_FAIL("EC0001", "처리 중 오류가 발생하였습니다"),
+	REQUEST_FAIL("EC0001", "처리 중 오류가 발생하였습니다"),
 	ERROR_NETWORK("EC0002", "네트워크에 문제가 발생하였습니다."),
 	
 	NOT_EXIST_PARAM("EP0001", "필수 파라미터가 누락되었습니다."),
 	NOT_EXIST_DATA("EP0002", "존재하지 않는 데이터입니다."),
+	ACCESS_DENIED("EP0003", "접근 권한이 없습니다"),
+	
+	UNAUTHORIZED("EP0004", "인증되지 않은 사용자입니다."),
+	INVALID_AUTHORIZED("EP0005", "유효하지 않은 인증정보입니다."),
+	NOT_EXIST_USER("EP0006", "존재하지 않는 사용자입니다."),
 	
 	
 	// 기타 관련
 	CANCEL_REQUEST("OA0001", "취소요청이 발생하였습니다."),
+	MISMATCH_USEID("OA0002", "아이디가 일치하지 않습니다."),
+	MISMATCH_PASSWORD("OA0003", "비밀번호가 일치하지 않습니다."),
+	MISMATCH_USER("OA0004", "아이디 또는 비밀번호가 일치하지 않습니다."),
 	;
 	
 	

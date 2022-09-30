@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ResultMessage> exceptionTest(Exception e){
-        return new ResponseEntity<>(ResultMessage.messageCode(SystemMessage.ERROR_REQUEST_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ResultMessage.messageCode(SystemMessage.REQUEST_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 }
