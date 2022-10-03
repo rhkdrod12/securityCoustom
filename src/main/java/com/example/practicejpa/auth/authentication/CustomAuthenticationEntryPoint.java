@@ -27,8 +27,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         System.out.println("여기 CustomAuthenticationEntryPoint 진입");
         ResponseEntity<String> test = ResponseEntity.ok("Test");
         response.setCharacterEncoding("UTF-8");
-        // response.setHeader("Access-Control-Allow-Origin", "http://192.168.10.79:3000");
-        // response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(objectMapper.writeValueAsString(ResultMessage.fail(SystemMessage.UNAUTHORIZED)));

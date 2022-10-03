@@ -65,4 +65,5 @@ public class BeanConfig {
 	public MultipartResolver multipartResolver(){
 		return new CommonsMultipartResolver();
 	}
+	
 }

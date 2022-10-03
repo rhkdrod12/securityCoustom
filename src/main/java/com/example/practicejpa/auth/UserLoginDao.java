@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -19,6 +20,10 @@ public class UserLoginDao {
 	EntityManager em;
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	public void updateRefreshToken(BigDecimal id, String refreshToken) {
+	
+	}
 	
 	public MemberDto findUserByName(String name) {
 		

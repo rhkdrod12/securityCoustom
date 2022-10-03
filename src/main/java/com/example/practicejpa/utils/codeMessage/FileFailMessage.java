@@ -4,7 +4,7 @@ import com.example.practicejpa.utils.codeMessage.messageInterface.FailMessage;
 import lombok.Getter;
 
 @Getter
-public enum FileFailMessage implements FailMessage {
+public enum FileFailMessage implements FailMessage{
 	
 	// 서버설정 관련은 100번대
 	FILE_MAX_OVER_SIZE("ECF101", "허용된 용량을 초과한 파일입니다."),

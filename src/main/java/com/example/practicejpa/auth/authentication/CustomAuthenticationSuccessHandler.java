@@ -1,5 +1,6 @@
 package com.example.practicejpa.auth.authentication;
 
+import com.example.practicejpa.auth.MemberDto;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.responseEntity.ResultMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(ResultMessage.done(authentication.getCredentials(), SystemMessage.SUCCUES_LOGIN)));
+        response.getWriter().write(objectMapper.writeValueAsString(ResultMessage.done(((MemberDto)authentication.getPrincipal()).getToken(), SystemMessage.SUCCUES_LOGIN)));
     }
 }

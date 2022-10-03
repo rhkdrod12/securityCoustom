@@ -2,6 +2,9 @@ package com.example.practicejpa.utils.codeMessage;
 
 import com.example.practicejpa.utils.codeMessage.messageInterface.FailMessage;
 import com.example.practicejpa.utils.codeMessage.messageInterface.SucessMessage;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Arrays;
 
 public enum SystemMessage implements SucessMessage, FailMessage {
 	
@@ -38,6 +41,7 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	// 실패관련
 	REQUEST_FAIL("EC0001", "처리 중 오류가 발생하였습니다"),
 	ERROR_NETWORK("EC0002", "네트워크에 문제가 발생하였습니다."),
+	UNNOMAL_REQUEST("EC0003", "정상적이지 않은 요청입니다"),
 	
 	NOT_EXIST_PARAM("EP0001", "필수 파라미터가 누락되었습니다."),
 	NOT_EXIST_DATA("EP0002", "존재하지 않는 데이터입니다."),
@@ -45,7 +49,8 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	
 	UNAUTHORIZED("EP0004", "인증되지 않은 사용자입니다."),
 	INVALID_AUTHORIZED("EP0005", "유효하지 않은 인증정보입니다."),
-	NOT_EXIST_USER("EP0006", "존재하지 않는 사용자입니다."),
+	EXPIRE_AUTHORIZED("EP0006", "만료된 인증정보입니다."),
+	NOT_EXIST_USER("EP0007", "존재하지 않는 사용자입니다."),
 	
 	
 	// 기타 관련
@@ -75,6 +80,11 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	@Override
 	public String Name() {
 		return name();
+	}
+	
+	@JsonCreator
+	public static SystemMessage toEnum(String value){
+		return Arrays.stream(SystemMessage.values()).filter(systemMessage ->  systemMessage.code.equals(value)).findFirst().orElse(null);
 	}
 }
 

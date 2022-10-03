@@ -7,9 +7,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.practicejpa.auth.MemberDto;
+import com.example.practicejpa.model.User;
 import com.example.practicejpa.utils.other.CopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -50,9 +53,42 @@ public class JwtProvider {
 	
 	public JWTResult createToken(MemberDto memberDto) {
 		String uuid = UUID.randomUUID().toString();
-		String accessToken = this.createAccessToken(uuid, memberDto);
-		String refreshToken = this.createRefreshToken(uuid);
+		return this.createToken(memberDto, uuid);
+	}
+	
+	public JWTResult createToken(MemberDto memberDto, String id) {
+		String accessToken = this.createAccessToken(id, memberDto);
+		String refreshToken = this.createRefreshToken(id);
 		return new JWTResult(accessToken, refreshToken);
+	}
+	
+	public JWTResult createToken(com.example.practicejpa.model.User user, String id) {
+		return this.createToken(this.convetMemberDto(user), id);
+	}
+	
+	public JWTResult createToken(com.example.practicejpa.model.User user) {
+		// DTO로 변환
+		return this.createToken(convetMemberDto(user));
+	}
+	
+	private MemberDto convetMemberDto(com.example.practicejpa.model.User user) {
+		// DTO로 변환
+		MemberDto member = CopyUtils.CopyObject(MemberDto.class, user);
+		Optional.ofNullable(user.getAuths())
+		        .ifPresent(auths -> member.setAuths(auths.stream()
+		                                                 .map(com.example.practicejpa.model.Auth::getGrantedAuthority)
+		                                                 .collect(Collectors.toSet())));
+		return member;
+	}
+	
+	/**
+	 *
+	 * @param id
+	 * @param user
+	 * @return
+	 */
+	public String createAccessToken(String id, com.example.practicejpa.model.User user) {
+		return this.createAccessToken(id, this.convetMemberDto(user));
 	}
 	
 	/**
@@ -98,6 +134,11 @@ public class JwtProvider {
 		          .sign(algorithm);
 	}
 	
+	public Authentication getAuthentication(String accessToken) {
+		MemberDto user = this.getUser(accessToken);
+		return new UsernamePasswordAuthenticationToken(user, null, user.getAuths());
+	}
+	
 	public MemberDto getUser(String token) {
 		
 		try {
@@ -123,10 +164,17 @@ public class JwtProvider {
 		}
 	}
 	
+	/**
+	 * AccessToken과 refreshToken을 검증하여 재발급 가능한 상태인지 확인
+	 *
+	 * @param accessToken
+	 * @param refreshToken
+	 * @return
+	 */
 	public JwtState validToken(String accessToken, String refreshToken) {
-		if(this.validAccessToken(accessToken) != JwtState.ERROR){
+		if (this.validAccessToken(accessToken) != JwtState.ERROR) {
 			String id = this.getID(accessToken);
-			if (this.validRefreshToken(id, refreshToken) != JwtState.ERROR){
+			if (this.validRefreshToken(id, refreshToken) != JwtState.ERROR) {
 				return JwtState.SUCCESS;
 			}
 		}

@@ -1,5 +1,6 @@
-package com.example.practicejpa.auth;
+package com.example.practicejpa.config;
 
+import com.example.practicejpa.auth.CustomAccessDeniedHandler;
 import com.example.practicejpa.auth.authentication.CustomAuthenticationEntryPoint;
 import com.example.practicejpa.auth.authentication.CustomAuthenticationFailureHandler;
 import com.example.practicejpa.auth.authentication.CustomAuthenticationProcessingFilter;
@@ -7,6 +8,7 @@ import com.example.practicejpa.auth.authentication.CustomAuthenticationProvider;
 import com.example.practicejpa.auth.authentication.CustomAuthenticationSuccessHandler;
 import com.example.practicejpa.auth.authentication.CustomLogoutHandler;
 import com.example.practicejpa.auth.authentication.CustomLogoutSuccessHandler;
+import com.example.practicejpa.auth.authentication.JwtAuthFilter;
 import com.example.practicejpa.utils.Jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -96,9 +99,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://192.168.10.79:3000");
+        configuration.addAllowedOrigin("http://127.0.0.1:3000");
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("Content-Disposition");
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -109,12 +114,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http//.httpBasic().disable()
-            
+    
             //로그인
             .formLogin()
-            .loginProcessingUrl("/login")
-            .successHandler(customAuthenticationSuccessHandler())   //굳이 복잡하게 할 필요가 없었군....
-            .failureHandler(customAuthenticationFailureHandler())
+            // .loginProcessingUrl("/login")
+            // .successHandler(customAuthenticationSuccessHandler())   //굳이 복잡하게 할 필요가 없었군....
+            // .failureHandler(customAuthenticationFailureHandler())
             //로그아웃
             .and()
             .logout()
@@ -126,22 +131,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 생성 금지
             .and()
-
+    
             //인증 및 인가
             .authorizeRequests()
-            .antMatchers("/get", "/insertUser","/menu/**").permitAll()
+            .antMatchers("/get", "/insertUser", "/menu/**").permitAll()
             .anyRequest().authenticated()
+    
             // .accessDecisionManager()
-
+    
             //에러
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(customAuthenticationEntryPoint)   //인증 실패시 보낼 핸들러
             .accessDeniedHandler(customAccessDeniedHandler)
-        ;
             //굳이 필터를 만들 필요가 없었어 ㅠㅠ
-            //.and().addFilterBefore(customAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+            .and()
+            // 토큰이 존재하는 경우 인증과정을 통과시키기 위한 JWT인증 필터를 추가
+            .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+            // 로그인 과정을 처리하기위한 필터 추가
+            .addFilterAt(customAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+    
     
     // 커스텀 인증 필터
     @Bean

@@ -2,6 +2,7 @@ package com.example.practicejpa.auth;
 
 import com.example.practicejpa.utils.Json.CustomJsonDeserializer;
 import com.example.practicejpa.utils.Json.CustomJsonSerializer;
+import com.example.practicejpa.utils.Jwt.JWTResult;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,6 @@ public class MemberDto {
     @JsonSerialize(contentUsing = CustomJsonSerializer.class)
     @JsonDeserialize(contentUsing = CustomJsonDeserializer.class)
     private Set<GrantedAuthority> auths;
+    
+    private JWTResult token;
 }
