@@ -2,13 +2,10 @@ package com.example.practicejpa.auth.authentication;
 
 import com.example.practicejpa.auth.MemberDto;
 import com.example.practicejpa.auth.UserLoginService;
-import com.example.practicejpa.dao.repository.AuthTokenRepository;
 import com.example.practicejpa.dao.repository.UserRepository;
 import com.example.practicejpa.exception.AuthException;
 import com.example.practicejpa.model.Auth;
-import com.example.practicejpa.model.AuthToken;
 import com.example.practicejpa.model.User;
-import com.example.practicejpa.service.UserService;
 import com.example.practicejpa.utils.Jwt.JWTResult;
 import com.example.practicejpa.utils.Jwt.JwtProvider;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
@@ -34,8 +31,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private JwtProvider jwtProvider;
-	@Autowired
-	private UserService userService;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

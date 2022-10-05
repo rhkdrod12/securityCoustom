@@ -1,7 +1,7 @@
 package com.example.practicejpa.auth;
 
-import com.example.practicejpa.auth.Model.QAuth;
-import com.example.practicejpa.auth.Model.QUser;
+import com.example.practicejpa.model.QAuth;
+import com.example.practicejpa.model.QUser;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

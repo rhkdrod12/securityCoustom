@@ -52,10 +52,6 @@ public class User{
     private String userPw;
     @Column(name="name", nullable = false, length = 10)
     private String name;
-    @Column(name = "age", length = 4)
-    private int age;
-    @Column(name = "zip")
-    private String zip;
     
     @Column(name = "REFRESH_ID", nullable = true, unique = true)
     private String refrehId;
