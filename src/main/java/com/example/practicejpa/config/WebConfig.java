@@ -1,6 +1,6 @@
 package com.example.practicejpa.config;
 
-import com.example.practicejpa.handler.SameSiteInterceptor;
+import com.example.practicejpa.handler.SecurityInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new SameSiteInterceptor())
+		registry.addInterceptor(new SecurityInterceptor())
 		        .excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}

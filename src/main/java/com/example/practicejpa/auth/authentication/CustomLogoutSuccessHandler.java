@@ -27,3 +27,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         response.getWriter().write(objectMapper.writeValueAsString(ResultMessage.done(SystemMessage.SUCCUES_LOGOUT)));
     }
 }
+
+// http -> 프로토콜
+//

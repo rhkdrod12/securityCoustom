@@ -9,6 +9,7 @@ import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ContentDisposition;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +41,8 @@ import java.util.zip.ZipOutputStream;
 @RestController
 @RequestMapping("/api")
 public class FileContorller {
-	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	@Autowired
 	FileService fileService;
 	
