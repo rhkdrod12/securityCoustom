@@ -39,22 +39,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		String accessToken = request.getHeader(AUTHORIZATION_HEADER);
 		
-		if (!LOGIN_PATH.equals(request.getRequestURI()) && ParamUtils.isNotEmpty(accessToken)) {
-			JwtState state = jwtProvider.validAccessToken(accessToken);
-			if(state == JwtState.SUCCESS){
-				log.info("인증 성공");
-				SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(accessToken));
-			} else if (state == JwtState.EXPIRE) {
-				log.info("만료된 인증정보");
-				throw new GlobalException(SystemMessage.EXPIRE_AUTHORIZED);
-			} else if (state == JwtState.ERROR) {
-				log.info("잘못된 인증정보, 여러번 재시도시 막아야함 -> 인증정보를 조작했다라는 의미임");
-				throw new GlobalException(SystemMessage.INVALID_AUTHORIZED);
+		if (LOGIN_PATH.equals(request.getRequestURI())) {
+			// 다음 필터로 넘김
+			filterChain.doFilter(request, response);
+		}else{
+			if (ParamUtils.isNotEmpty(accessToken)) {
+				JwtState state = jwtProvider.validAccessToken(accessToken);
+				if(state == JwtState.SUCCESS){
+					log.info("인증 성공");
+					SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(accessToken));
+				} else if (state == JwtState.EXPIRE) {
+					log.info("만료된 인증정보");
+					throw new GlobalException(SystemMessage.EXPIRE_AUTHORIZED);
+				} else if (state == JwtState.ERROR) {
+					log.info("잘못된 인증정보, 여러번 재시도시 막아야함 -> 인증정보를 조작했다라는 의미임");
+					throw new GlobalException(SystemMessage.INVALID_AUTHORIZED);
+				}
+				// 다음 필터로 넘김
+				filterChain.doFilter(request, response);
+			}else{
+				log.info("인증정보 없음");
+				throw new GlobalException(SystemMessage.UNAUTHORIZED);
 			}
 		}
-		
-		// 다음 필터로 넘김
-		filterChain.doFilter(request, response);
 	}
-	
 }

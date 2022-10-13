@@ -82,9 +82,14 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 		return name();
 	}
 	
+	/**
+	 * code를 enum으로 변환
+	 * @param code systemCode
+	 * @return systemCode enum
+	 */
 	@JsonCreator
-	public static SystemMessage toEnum(String value){
-		return Arrays.stream(SystemMessage.values()).filter(systemMessage ->  systemMessage.code.equals(value)).findFirst().orElse(null);
+	public static SystemMessage toEnum(String code){
+		return Arrays.stream(SystemMessage.values()).filter(systemMessage ->  systemMessage.code.equals(code)).findFirst().orElse(null);
 	}
 }
 

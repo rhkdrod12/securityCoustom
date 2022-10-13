@@ -6,7 +6,7 @@ server:
       charset: utf-8
   
 jwtProvider:
-  expireTime: 900
+  expireTime: 90
 
 
 #  http2:

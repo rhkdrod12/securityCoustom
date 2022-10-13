@@ -10,6 +10,7 @@ import com.example.practicejpa.auth.MemberDto;
 import com.example.practicejpa.model.User;
 import com.example.practicejpa.utils.other.CopyUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,26 +31,32 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 	
-	@Value("${jwtProvider.scretKey:MYSYSJWT}")
-	private String scretKey = "MYTESTJWT";
-	@Value("${jwtProvider.issuer:MYSYSTEM}")
-	private String issuer = "MYSYSTEM";
-	@Value("${jwtProvider.expireTime: 600}")
-	private long expireTime;
-	@Value("${jwtProvider.refreshTime: 86400}")
-	private long refreshTime;
+	private final String issuer;
+	private final long expireTime;
+	private final long refreshTime;
+	private final ZoneId zoneId = ZoneId.of("Asia/Seoul");
+	private final Clock clock = Clock.system(zoneId);
 	
-	private ZoneId zoneId = ZoneId.of("Asia/Seoul");
-	private Clock clock = Clock.system(zoneId);
+	private final Algorithm algorithm;
+	private final JWTVerifier jwtVerifier;
 	
-	private Algorithm algorithm = Algorithm.HMAC256(scretKey);
-	private JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
+	private static final String ID = "Id";
+	private static final String IP_ADDRESS = "IpAddress";
+	private static final String Auth = "Auth";
+	private static final String User = "User";
 	
-	private static String ID = "Id";
-	private static String IP_ADDRESS = "IpAddress";
-	private static String Auth = "Auth";
-	private static String User = "User";
-	
+	@Autowired
+	public JwtProvider(@Value("${jwtProvider.scretKey:MYSYSJWT}") String scretKey,
+	                   @Value("${jwtProvider.issuer:MYSYSTEM}") String issuer,
+	                   @Value("${jwtProvider.expireTime:600}") long expireTime,
+	                   @Value("${jwtProvider.refreshTime:86400}") long refreshTime) {
+		
+		this.issuer   = issuer;
+		this.expireTime = expireTime;
+		this.refreshTime = refreshTime;
+		this.algorithm = Algorithm.HMAC256(scretKey);
+		this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
+	}
 	
 	public JWTResult createToken(MemberDto memberDto) {
 		String uuid = UUID.randomUUID().toString();
@@ -82,7 +89,6 @@ public class JwtProvider {
 	}
 	
 	/**
-	 *
 	 * @param id
 	 * @param user
 	 * @return
