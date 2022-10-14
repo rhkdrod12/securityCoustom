@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils.Json;
+package com.example.practicejpa.jwtSecurity.util;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -9,13 +9,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
 
-public class CustomJsonDeserializer extends StdDeserializer<GrantedAuthority> {
+public class JwtGrantDeserializer extends StdDeserializer<GrantedAuthority> {
 	
-	public CustomJsonDeserializer(){
+	public JwtGrantDeserializer(){
 		this(null);
 	}
 	
-	protected CustomJsonDeserializer(Class<?> vc) {
+	protected JwtGrantDeserializer(Class<?> vc) {
 		super(vc);
 	}
 	

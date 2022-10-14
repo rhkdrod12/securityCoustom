@@ -1,18 +1,9 @@
 package com.example.practicejpa;
 
 import com.example.practicejpa.auth.MemberDto;
-import com.example.practicejpa.utils.Jwt.JwtState;
-import com.example.practicejpa.utils.Jwt.JwtProvider;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class MainTest {
 	

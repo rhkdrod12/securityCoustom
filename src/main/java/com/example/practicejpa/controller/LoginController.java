@@ -2,15 +2,14 @@ package com.example.practicejpa.controller;
 
 import com.example.practicejpa.auth.UserLoginService;
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.utils.Jwt.JWTResult;
-import com.example.practicejpa.utils.Jwt.JwtProvider;
-import com.example.practicejpa.utils.Jwt.JwtState;
+import com.example.practicejpa.jwtSecurity.JWTResult;
+import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemCode;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

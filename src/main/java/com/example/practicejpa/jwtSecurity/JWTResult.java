@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils.Jwt;
+package com.example.practicejpa.jwtSecurity;
 
 import com.example.practicejpa.dto.vo.BaseVo;
 import lombok.AllArgsConstructor;

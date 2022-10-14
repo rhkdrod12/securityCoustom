@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils.Jwt;
+package com.example.practicejpa.jwtSecurity;
 
 /**
  * 결과값을 받기 위한 enum

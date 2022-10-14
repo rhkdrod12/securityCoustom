@@ -1,8 +1,7 @@
-package com.example.practicejpa.auth;
+package com.example.practicejpa.jwtSecurity;
 
-import com.example.practicejpa.utils.Json.CustomJsonDeserializer;
-import com.example.practicejpa.utils.Json.CustomJsonSerializer;
-import com.example.practicejpa.utils.Jwt.JWTResult;
+import com.example.practicejpa.jwtSecurity.util.JwtGrantDeserializer;
+import com.example.practicejpa.jwtSecurity.util.JwtGrantSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -17,14 +16,15 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDto {
+public class Member {
+    
     private String userId;
     private String userPw;
     private String name;
     private int age;
     
-    @JsonSerialize(contentUsing = CustomJsonSerializer.class)
-    @JsonDeserialize(contentUsing = CustomJsonDeserializer.class)
+    @JsonSerialize(contentUsing = JwtGrantSerializer.class)
+    @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)
     private Set<GrantedAuthority> auths;
     
     private JWTResult token;

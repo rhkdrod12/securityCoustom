@@ -13,16 +13,9 @@ public class JwtSecurityConfig {
 	 * login, logout, 경로별 인증필터, 경로별 인가필터
 	 * 실패, 성공시의 handler
 	 */
-	
 	public void configure(){
 	
 	}
-	
-
-
 }
 
 
-class JwtSecurityConfiguration{
-
-}

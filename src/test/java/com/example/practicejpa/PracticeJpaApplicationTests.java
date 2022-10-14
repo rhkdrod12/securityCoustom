@@ -1,7 +1,7 @@
 package com.example.practicejpa;
 
 import com.example.practicejpa.auth.MemberDto;
-import com.example.practicejpa.utils.Jwt.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,23 +1,17 @@
-package com.example.practicejpa.auth.authentication;
+package com.example.practicejpa.jwtSecurity.authentication;
 
 import com.example.practicejpa.auth.MemberDto;
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.utils.Jwt.JwtProvider;
-import com.example.practicejpa.utils.Jwt.JwtState;
+import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

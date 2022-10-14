@@ -1,4 +1,4 @@
-package com.example.practicejpa.utils.Jwt;
+package com.example.practicejpa.jwtSecurity;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -6,8 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.practicejpa.auth.MemberDto;
-import com.example.practicejpa.model.User;
 import com.example.practicejpa.utils.other.CopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,13 +56,13 @@ public class JwtProvider {
 		this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
 	}
 	
-	public JWTResult createToken(MemberDto memberDto) {
+	public JWTResult createToken(Member member) {
 		String uuid = UUID.randomUUID().toString();
-		return this.createToken(memberDto, uuid);
+		return this.createToken(member, uuid);
 	}
 	
-	public JWTResult createToken(MemberDto memberDto, String id) {
-		String accessToken = this.createAccessToken(id, memberDto);
+	public JWTResult createToken(Member member, String id) {
+		String accessToken = this.createAccessToken(id, member);
 		String refreshToken = this.createRefreshToken(id);
 		return new JWTResult(accessToken, refreshToken);
 	}
@@ -78,9 +76,9 @@ public class JwtProvider {
 		return this.createToken(convetMemberDto(user));
 	}
 	
-	private MemberDto convetMemberDto(com.example.practicejpa.model.User user) {
+	private Member convetMemberDto(com.example.practicejpa.model.User user) {
 		// DTO로 변환
-		MemberDto member = CopyUtils.CopyObject(MemberDto.class, user);
+		Member member = CopyUtils.CopyObject(Member.class, user);
 		Optional.ofNullable(user.getAuths())
 		        .ifPresent(auths -> member.setAuths(auths.stream()
 		                                                 .map(com.example.practicejpa.model.Auth::getGrantedAuthority)
@@ -103,7 +101,7 @@ public class JwtProvider {
 	 * @param
 	 * @return
 	 */
-	public String createAccessToken(String id, MemberDto memberDto) {
+	public String createAccessToken(String id, Member memberDto) {
 		
 		List<String> auths = Optional.ofNullable(memberDto.getAuths())
 		                             .orElse(new HashSet<>())
@@ -141,11 +139,11 @@ public class JwtProvider {
 	}
 	
 	public Authentication getAuthentication(String accessToken) {
-		MemberDto user = this.getUser(accessToken);
+		Member user = this.getUser(accessToken);
 		return new UsernamePasswordAuthenticationToken(user, null, user.getAuths());
 	}
 	
-	public MemberDto getUser(String token) {
+	public Member getUser(String token) {
 		
 		try {
 			DecodedJWT verify = jwtVerifier.verify(token);
@@ -154,7 +152,7 @@ public class JwtProvider {
 			List<String> auths = verify.getClaim(Auth).asList(String.class);
 			memMap.put("auths", auths);
 			
-			return CopyUtils.convertObject(memMap, MemberDto.class);
+			return CopyUtils.convertObject(memMap, Member.class);
 			
 		} catch (JWTVerificationException ignored) {
 			return null;
