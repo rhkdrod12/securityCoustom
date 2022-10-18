@@ -1,8 +1,11 @@
-package com.example.practicejpa.jwtSecurity.authentication;
+package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.jwtSecurity.JwtProvider;
 import com.example.practicejpa.jwtSecurity.JwtState;
+import com.example.practicejpa.jwtSecurity.authentication.JwtAuthFilter;
+import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
+import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,24 +18,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 인증 관련 필터 
+ */
 @Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends JwtAuthFilter {
 	
-	private final JwtProvider jwtProvider;
 	
-	public JwtAuthenticationFilter(JwtProvider jwtProvider) {
-		this.jwtProvider = jwtProvider;
+	public JwtAuthenticationFilter(JwtProvider jwtProvider, JwtSecurityHandler jwtSecurityHandler) {
+		super(jwtProvider, jwtSecurityHandler);
 	}
-	
-	public static final String AUTHORIZATION_HEADER = "Authorization";
-	public static final String LOGIN_PATH = "/user/login";
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		
 		String accessToken = request.getHeader(AUTHORIZATION_HEADER);
 		
-		if (!LOGIN_PATH.equals(request.getRequestURI()) && ParamUtils.isNotEmpty(accessToken)) {
+		if (ParamUtils.isNotEmpty(accessToken)) {
 			JwtState state = jwtProvider.validAccessToken(accessToken);
 			if(state == JwtState.SUCCESS){
 				log.info("인증 성공");
@@ -44,10 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				log.info("잘못된 인증정보, 여러번 재시도시 막아야함 -> 인증정보를 조작했다라는 의미임");
 				throw new GlobalException(SystemMessage.INVALID_AUTHORIZED);
 			}
+			// 다음 필터로 넘김
+			filterChain.doFilter(request, response);
+			
+		}else{
+			log.info("인증정보 없음");
+			throw new JwtSecurityException(SystemMessage.UNAUTHORIZED);
 		}
-		
-		// 다음 필터로 넘김
-		filterChain.doFilter(request, response);
 	}
 	
 }
