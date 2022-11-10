@@ -24,7 +24,6 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends JwtAuthFilter {
 	
-	
 	public JwtAuthenticationFilter(JwtProvider jwtProvider, JwtSecurityHandler jwtSecurityHandler) {
 		super(jwtProvider, jwtSecurityHandler);
 	}

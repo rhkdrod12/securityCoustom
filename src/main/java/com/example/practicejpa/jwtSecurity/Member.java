@@ -21,7 +21,6 @@ public class Member {
     private String userId;
     private String userPw;
     private String name;
-    private int age;
     
     @JsonSerialize(contentUsing = JwtGrantSerializer.class)
     @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)

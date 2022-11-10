@@ -19,8 +19,11 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
 	
-	protected final JwtProvider jwtProvider;
+	protected static final String AUTHORIZATION_HEADER = "Authorization";
+	protected static final String LOGIN_PATH = "/user/login";
+	protected static final String LOGOUT_PATH = "/user/logout";
 	
+	protected final JwtProvider jwtProvider;
 	protected final JwtSecurityHandler jwtSecurityHandler;
 	
 	public JwtAuthFilter(JwtProvider jwtProvider, JwtSecurityHandler jwtSecurityHandler) {
@@ -28,14 +31,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		this.jwtSecurityHandler = jwtSecurityHandler;
 	}
 	
-	protected static final String AUTHORIZATION_HEADER = "Authorization";
-	protected static final String LOGIN_PATH = "/user/login";
-	
-	protected static final String LOGOUT_PATH = "/user/logout";
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		
-	
+		filterChain.doFilter(request, response);
 	}
 }

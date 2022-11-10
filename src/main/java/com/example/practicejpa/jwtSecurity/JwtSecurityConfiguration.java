@@ -2,22 +2,24 @@ package com.example.practicejpa.jwtSecurity;
 
 
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
+import lombok.Getter;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Getter
 public class JwtSecurityConfiguration {
 	
 	// JWT 인증, 인가시 사용할 필터
 	List<Filter> jwtFilterList = new ArrayList<>();
 	
 	// 인증 후 사용할 Handler
-	JwtSecurityHandler loginHandler;
-	JwtSecurityHandler logoutHandler;
-	JwtSecurityHandler authenticationHandler;
-	JwtSecurityHandler authorizationhandler;
+	private JwtSecurityHandler loginHandler;
+	private JwtSecurityHandler logoutHandler;
+	private JwtSecurityHandler authenticationHandler;
+	private JwtSecurityHandler authorizationhandler;
 	
 	public JwtSecurityConfiguration() {
 	
