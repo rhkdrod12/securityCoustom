@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.List;
 
 @Configuration
@@ -27,19 +28,17 @@ public class JwtSecurityConfig {
 	 */
 	public void configure(){
 		jwtSecurityConfiguration = new JwtSecurityConfiguration();
-	
-		jwtSecurityConfiguration.setAuthenticationHandler(new JwtAuthenticationHandler())
-		                        .setAuthorizationhandler(new JwtAuthorizationHandler())
-		                        .setLoginHandler(new JwtLoginHandler())
-		                        .setLogoutHandler(new JwtLogoutHandler());
-		
 	}
 	
 	@Bean
-	public FilterRegistrationBean filterRegistrationBean(){
+	public FilterRegistrationBean<Filter> filterRegistrationBean(){
 		
+		FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<Filter>();
 		
-		return null;
+		registrationBean.setFilter(null);
+		registrationBean.addUrlPatterns("/*");
+		
+		return registrationBean;
 	}
 	
 }

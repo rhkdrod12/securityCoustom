@@ -15,6 +15,22 @@ public class JwtSecurityFilterProvider {
 	// 성공 또는 실패 핸들러, 핸들러가 있는 경우 다음 필터로 넘기지 않음
 	JwtSecurityHandler handler;
 	
+	public String getFilterPath() {
+		return filterPath;
+	}
+	
+	public int getFilterOrder() {
+		return filterOrder;
+	}
+	
+	public Filter getFilter() {
+		return filter;
+	}
+	
+	public JwtSecurityHandler getHandler() {
+		return handler;
+	}
+	
 	private JwtSecurityFilterProvider(Filter filter) {
 		this.filter = filter;
 	}
