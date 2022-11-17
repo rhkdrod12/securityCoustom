@@ -1,14 +1,9 @@
 package com.example.practicejpa.jwtSecurity;
 
-import com.example.practicejpa.jwtSecurity.util.JwtGrantDeserializer;
-import com.example.practicejpa.jwtSecurity.util.JwtGrantSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
@@ -22,9 +17,9 @@ public class Member {
     private String userPw;
     private String name;
     
-    @JsonSerialize(contentUsing = JwtGrantSerializer.class)
-    @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)
-    private Set<GrantedAuthority> auths;
+    // @JsonSerialize(contentUsing = JwtGrantSerializer.class)
+    // @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)
+    private Set<String> auths;
     
     private JWTResult token;
 }

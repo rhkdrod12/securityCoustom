@@ -7,7 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JwtAuthenticationFilter extends JwtFilter {
+public class JwtLogoutFilter extends JwtFilter {
 	
 	@Override
 	public void doFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain, JwtSecurityHandler jwtSecurityHandler) {

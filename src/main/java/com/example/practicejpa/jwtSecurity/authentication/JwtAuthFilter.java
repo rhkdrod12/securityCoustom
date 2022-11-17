@@ -1,13 +1,8 @@
 package com.example.practicejpa.jwtSecurity.authentication;
 
-import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.jwtSecurity.JwtProvider;
-import com.example.practicejpa.jwtSecurity.JwtState;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
-import com.example.practicejpa.utils.codeMessage.SystemMessage;
-import com.example.practicejpa.utils.other.ParamUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

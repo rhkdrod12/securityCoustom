@@ -1,10 +1,8 @@
 package com.example.practicejpa.controller;
 
-import com.example.practicejpa.auth.UserLoginService;
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.jwtSecurity.JWTResult;
 import com.example.practicejpa.jwtSecurity.JwtProvider;
-import com.example.practicejpa.jwtSecurity.JwtState;
+import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemCode;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
@@ -21,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
-	
-	@Autowired
-	UserLoginService userLoginService;
 	@Autowired
 	JwtProvider jwtProvider;
 	
@@ -34,7 +29,7 @@ public class LoginController {
 			throw new GlobalException(SystemMessage.NOT_EXIST_PARAM);
 		}
 		
-		return CommResponse.done(new JWTResult(userLoginService.rePublishToken(accessToken, refreshToken)));
+		return CommResponse.done();
 	}
 	
 	@PostMapping("/access")

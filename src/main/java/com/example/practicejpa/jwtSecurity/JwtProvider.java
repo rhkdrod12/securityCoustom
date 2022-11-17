@@ -6,18 +6,17 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.utils.other.CopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -103,11 +102,8 @@ public class JwtProvider {
 	 */
 	public String createAccessToken(String id, Member memberDto) {
 		
-		List<String> auths = Optional.ofNullable(memberDto.getAuths())
-		                             .orElse(new HashSet<>())
-		                             .stream()
-		                             .map(GrantedAuthority::getAuthority)
-		                             .collect(Collectors.toList());
+		List<String> auths = new ArrayList<>(Optional.ofNullable(memberDto.getAuths())
+		                                             .orElse(new HashSet<>()));
 		
 		memberDto.setUserPw("");
 		
@@ -138,10 +134,10 @@ public class JwtProvider {
 		          .sign(algorithm);
 	}
 	
-	public Authentication getAuthentication(String accessToken) {
-		Member user = this.getUser(accessToken);
-		return new UsernamePasswordAuthenticationToken(user, null, user.getAuths());
-	}
+	// public Authentication getAuthentication(String accessToken) {
+	// 	Member user = this.getUser(accessToken);
+	// 	return new UsernamePasswordAuthenticationToken(user, null, user.getAuths());
+	// }
 	
 	public Member getUser(String token) {
 		

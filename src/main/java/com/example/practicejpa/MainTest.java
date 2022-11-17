@@ -1,6 +1,5 @@
 package com.example.practicejpa;
 
-import com.example.practicejpa.auth.MemberDto;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;

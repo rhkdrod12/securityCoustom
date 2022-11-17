@@ -52,6 +52,10 @@ public class ResultMessage {
 		return new ResultMessage(null, messageCode.Code(), messageCode.Message());
 	}
 	
+	static public ResultMessage message(MessageCode messageCode){
+		return new ResultMessage(null, messageCode.Code(), messageCode.Message());
+	}
+	
 	// 사용자 지정용
 	static public ResultMessage result(Object result, String resultCode, String resultMessage) {
 		return new ResultMessage(result, resultCode, resultMessage);

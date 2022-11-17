@@ -1,6 +1,5 @@
 package com.example.practicejpa.model;
 
-import com.example.practicejpa.utils.AuthConverter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -9,11 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -48,9 +45,9 @@ public class Auth{
     @Column(name = "auth_id")
     private BigDecimal id;
     
-    @Convert(converter = AuthConverter.class)
+    // @Convert(converter = AuthConverter.class)
     @Column(name = "auth")
-    private GrantedAuthority grantedAuthority;
+    private String grantedAuthority;
     
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

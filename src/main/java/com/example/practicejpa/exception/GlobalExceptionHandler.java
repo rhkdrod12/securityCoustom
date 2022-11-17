@@ -1,5 +1,6 @@
 package com.example.practicejpa.exception;
 
+import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.utils.responseEntity.ResultMessage;
 import com.example.practicejpa.utils.codeMessage.FileFailMessage;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResultMessage> handleAccessDeniedException(Exception ex, WebRequest request){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResultMessage.fail(ex.getMessage()));
         //return CommResponse.builder().status(HttpStatus.FORBIDDEN).message(ex.getMessage()).build();
+    }
+    
+    @ExceptionHandler(value = JwtSecurityException.class)
+    public ResponseEntity<ResultMessage> handleJwtSecurityException(JwtSecurityException ex){
+        return new ResponseEntity<>(ResultMessage.fail(ex.getMessage()), ex.getHttpStatus());
     }
     
     @ExceptionHandler(value = GlobalException.class)

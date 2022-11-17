@@ -10,11 +10,11 @@ public class JwtLoginHandler implements JwtSecurityHandler{
 	
 	@Override
 	public void onSuccess(HttpServletRequest request, HttpServletResponse response, JWTResult jwtResult) {
-	
+		System.out.println("로그인 핸들러~");
 	}
 	
 	@Override
 	public void onFailure(HttpServletRequest request, HttpServletResponse response, JwtSecurityException authException) {
-	
+		System.out.println("로그인 핸들러~ 실패");
 	}
 }
