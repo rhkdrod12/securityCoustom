@@ -120,6 +120,7 @@ public class FileContorller {
 					//
 					// 대용량 데이터에 대한 처리의 경우
 					// content-Disposition: form-data 형태로 사용
+					// 파일은 대용량 Stream -> 하나의 흐름 ->
 					httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 					httpHeaders.setContentDisposition(ContentDisposition.attachment()
 					                                                    .name(downloadName)

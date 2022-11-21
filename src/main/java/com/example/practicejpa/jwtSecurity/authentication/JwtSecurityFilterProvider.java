@@ -92,12 +92,6 @@ public class JwtSecurityFilterProvider {
 		return this;
 	}
 	
-	public JwtSecurityFilterProvider setHandler(JwtSecurityHandler handler) {
-		this.handler = handler;
-		this.filter.setJwtSecurityHandler(handler);
-		return this;
-	}
-	
 	public boolean requestMatch(HttpServletRequest request){
 		if (access == JwtAcess.DENY_ALL) {
 			return RequestMatcher.antMatches(request, filterPaths);

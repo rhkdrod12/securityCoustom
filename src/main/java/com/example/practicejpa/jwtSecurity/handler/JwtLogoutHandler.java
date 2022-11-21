@@ -6,9 +6,10 @@ import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JwtLogoutHandler implements JwtSecurityHandler{
+public class JwtLogoutHandler extends JwtSecurityHandler{
+	
 	@Override
-	public void onSuccess(HttpServletRequest request, HttpServletResponse response, JWTResult jwtResult) {
+	public void onSuccess(HttpServletRequest request, HttpServletResponse response, Object jwtResult) {
 	
 	}
 	

@@ -1,19 +1,28 @@
 package com.example.practicejpa.jwtSecurity.handler;
 
+import com.example.practicejpa.exception.JwtResponseManager;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
-import com.example.practicejpa.jwtSecurity.JWTResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface JwtSecurityHandler {
+public abstract class JwtSecurityHandler {
+	
+	protected JwtResponseManager jwtResponseManager;
+	
+	public void setJwtReponseManager(JwtResponseManager jwtResponseManager) {
+		this.jwtResponseManager = jwtResponseManager;
+	}
+	
 	/**
 	 * 인증 성공시 핸들러
 	 * @param request
 	 * @param response
 	 * @param jwtResult
 	 */
-	void onSuccess(HttpServletRequest request, HttpServletResponse response, JWTResult jwtResult);
+	public void onSuccess(HttpServletRequest request, HttpServletResponse response, Object result){
+		jwtResponseManager.sendData(result);
+	};
 	
 	/**
 	 * 인증 실패시 핸들러
@@ -21,6 +30,8 @@ public interface JwtSecurityHandler {
 	 * @param response
 	 * @param authException
 	 */
-	void onFailure(HttpServletRequest request, HttpServletResponse response, JwtSecurityException authException);
+	public void onFailure(HttpServletRequest request, HttpServletResponse response, JwtSecurityException authException){
+		jwtResponseManager.sendError(authException);
+	};
 	
 }

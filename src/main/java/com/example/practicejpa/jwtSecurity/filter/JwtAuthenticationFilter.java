@@ -1,5 +1,6 @@
 package com.example.practicejpa.jwtSecurity.filter;
 
+import com.example.practicejpa.exception.JwtResponseManager;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 
@@ -10,11 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends JwtFilter {
 	
 	@Override
-	public void doFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain, JwtSecurityHandler jwtSecurityHandler) {
+	public void doFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain, JwtResponseManager jwtResponseManager) {
 		System.out.println("여기 진입!");
-		
-		jwtSecurityHandler.onSuccess(servletRequest, servletResponse, null);
-		
-		jwtSecurityHandler.onFailure(servletRequest, servletResponse, new JwtSecurityException("테스트"));
 	}
 }

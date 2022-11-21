@@ -1,5 +1,6 @@
 package com.example.practicejpa.utils.responseEntity;
 
+import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.codeMessage.messageInterface.FailMessage;
 import com.example.practicejpa.utils.codeMessage.messageInterface.MessageCode;
@@ -30,8 +31,12 @@ public class CommResponse {
 	static public ResponseEntity<Object> fail(FailMessage failMessage){return ResponseEntity.badRequest().body(ResultMessage.fail(false, failMessage));}
 	static public ResponseEntity<Object> fail(FailMessage failMessage, HttpStatus httpStatus){return ResponseEntity.status(httpStatus).body(ResultMessage.fail(false, failMessage));}
 	
+	static public ResponseEntity<Object> fail(GlobalException exception){
+		return new ResponseEntity<>(ResultMessage.result(false, exception.getCode(), exception.getMessage()), exception.getHttpStatus());
+	}
+	
 	static public ResponseEntity<Object> fail(Object result){return ResponseEntity.badRequest().body(ResultMessage.fail(result));}
 	static public ResponseEntity<Object> fail(Object result, FailMessage failMessage) {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}
-	static public ResponseEntity<Object> fail(Object result, MessageCode failMessage)             {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}
+	static public ResponseEntity<Object> fail(Object result, MessageCode failMessage) {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}
 	static public ResponseEntity<Object> fail(Object result, MessageCode failMessage, HttpStatus httpStatus) {return ResponseEntity.status(httpStatus).body(ResultMessage.fail(result, failMessage));}
 }

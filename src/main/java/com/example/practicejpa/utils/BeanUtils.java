@@ -10,4 +10,5 @@ public class BeanUtils {
 	static public <T> T getBean(String beanName, Class<T> clz) {
 		return ApplicationContextProvider.getApplicationContext().getBean(beanName, clz);
 	}
+	
 }

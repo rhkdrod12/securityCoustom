@@ -1,5 +1,7 @@
 package com.example.practicejpa.jwtSecurity.filter;
 
+import com.example.practicejpa.exception.JwtResponseManager;
+import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 
 import javax.servlet.Filter;
@@ -13,21 +15,13 @@ import java.io.IOException;
 
 public abstract class JwtFilter implements Filter {
 	
-	private JwtSecurityHandler JWT_SECURITY_HANDLER = null;
+	private JwtResponseManager jwtResponseManager;
 	
 	public JwtFilter() {
 	}
 	
-	public JwtFilter(JwtSecurityHandler JWT_SECURITY_HANDLER) {
-		this.JWT_SECURITY_HANDLER = JWT_SECURITY_HANDLER;
-	}
-
-	public void setJwtSecurityHandler(JwtSecurityHandler jwtSecurityHandler){
-		this.JWT_SECURITY_HANDLER = jwtSecurityHandler;
-	}
-	
-	public JwtSecurityHandler getJwtSecurityHandler(){
-		return this.JWT_SECURITY_HANDLER;
+	public void setJwtResponseManager(JwtResponseManager jwtResponseManager) {
+		this.jwtResponseManager = jwtResponseManager;
 	}
 	
 	@Override
@@ -38,10 +32,19 @@ public abstract class JwtFilter implements Filter {
 	/**
 	 * 오버리이딩 금지 처리
 	 */
-	public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain, JwtSecurityHandler jwtSecurityHandler){
-		this.doFilter((HttpServletRequest) servletRequest, (HttpServletResponse)servletResponse, filterChain, jwtSecurityHandler);
+	public final void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain, JwtResponseManager jwtResponseManager){
+		this.doFilter((HttpServletRequest) servletRequest, (HttpServletResponse)servletResponse, filterChain, jwtResponseManager);
 	}
 	
-	abstract public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, JwtSecurityHandler jwtSecurityHandler);
+	abstract public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, JwtResponseManager jwtResponseManager);
+	
+	protected void onSuccess(Object object){
+		jwtResponseManager.sendData(object);
+	}
+	
+	protected void onFailure(JwtSecurityException exception) {
+		jwtResponseManager.sendError(exception);
+	}
+	
 	
 }
