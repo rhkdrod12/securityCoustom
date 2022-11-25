@@ -2,7 +2,7 @@ package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.jwtSecurity.authentication.JwtAuthFilter;
-import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
@@ -22,16 +22,17 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilterOrg extends JwtAuthFilter {
 	
-	public JwtAuthenticationFilterOrg(JwtProvider jwtProvider, JwtSecurityHandler jwtSecurityHandler) {
-		super(jwtProvider, jwtSecurityHandler);
+	public JwtAuthenticationFilterOrg(JwtPublishProvider jwtPublishProvider, JwtSecurityHandler jwtSecurityHandler) {
+		super(jwtPublishProvider, jwtSecurityHandler);
 	}
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		
 		String accessToken = request.getHeader(AUTHORIZATION_HEADER);
 		
 		if (ParamUtils.isNotEmpty(accessToken)) {
-			JwtState state = jwtProvider.validAccessToken(accessToken);
+			JwtState state = jwtPublishProvider.validAccessToken(accessToken);
 			if(state == JwtState.SUCCESS){
 				log.info("인증 성공");
 				//SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(accessToken));

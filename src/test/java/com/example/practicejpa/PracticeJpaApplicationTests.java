@@ -1,7 +1,7 @@
 package com.example.practicejpa;
 
 import com.example.practicejpa.auth.MemberDto;
-import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class PracticeJpaApplicationTests {
 	
 	@Autowired
-	private JwtProvider jwtProvider;
+	private JwtPublishProvider jwtPublishProvider;
 	
 	
 	@Test
@@ -39,13 +39,13 @@ class PracticeJpaApplicationTests {
 		auths.add(new SimpleGrantedAuthority("ROLE_USER"));
 		memberDto.setAuths(auths);
 		
-		assertNotNull(jwtProvider);
+		assertNotNull(jwtPublishProvider);
 		
-		System.out.println(jwtProvider);
+		System.out.println(jwtPublishProvider);
 		
 		String uuid = UUID.randomUUID().toString();
-		String accessToken = jwtProvider.createAccessToken(uuid, memberDto);
-		String refreshToken = jwtProvider.createRefreshToken(uuid);
+		String accessToken = jwtPublishProvider.createAccessToken(uuid, memberDto);
+		String refreshToken = jwtPublishProvider.createRefreshToken(uuid);
 		
 		
 		

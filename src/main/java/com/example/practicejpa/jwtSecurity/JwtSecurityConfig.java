@@ -27,26 +27,44 @@ public class JwtSecurityConfig {
 	 *
 	 *
 	 */
-	public JwtSecurityConfiguration configure(){
-		
+	
+	@Bean
+	public JwtLoginFilter jwtLoginFilter(){
+		return new JwtLoginFilter();
+	}
+	@Bean
+	public JwtLogoutFilter jwtLogoutFilter() {
+		return new JwtLogoutFilter();
+	}
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
+	
+	/**
+	 * 나중에 수정 필요, 이런 형태로 진행하는 건 좀 아닌 것 같음
+	 * config형태로 보이지 않음
+	 */
+	@Bean
+	public JwtSecurityConfiguration configure(JwtLoginFilter jwtLoginFilter,
+	                                          JwtLogoutFilter jwtLogoutFilter,
+	                                          JwtAuthenticationFilter jwtAuthenticationFilter){
+		// 자동주입을 사용하려면 bean으로 등록을 해야하는데 이 방식으로는 어렵단 말이지..
 		// 로그인 필터 등록
-		JwtSecurityFilterProvider loginProvider = JwtSecurityFilterProvider.Filter(new JwtLoginFilter())
+		JwtSecurityFilterProvider loginProvider = JwtSecurityFilterProvider.Filter(jwtLoginFilter)
 		                                                                   .setFilterOrder(1)
 		                                                                   .setFilterPaths("/user/login");
-		                                                                    // .setHandler(new JwtLoginHandler());
 		// 로그아웃 필터 등록
-		JwtSecurityFilterProvider logoutProvider = JwtSecurityFilterProvider.Filter(new JwtLogoutFilter())
+		JwtSecurityFilterProvider logoutProvider = JwtSecurityFilterProvider.Filter(jwtLogoutFilter)
 		                                                                    .setFilterOrder(2)
 		                                                                    .setFilterPaths("/user/logout");
-		                                                                   // .setHandler(new JwtLogoutHandler());
 		// 인증 필터 등록
-		JwtSecurityFilterProvider authProvider = JwtSecurityFilterProvider.Filter(new JwtAuthenticationFilter())
+		JwtSecurityFilterProvider authProvider = JwtSecurityFilterProvider.Filter(jwtAuthenticationFilter)
 		                                                                  .setFilterOrder(3)
-		                                                                  .setPermitAll();
-		                                                                    // .setHandler(new JwtAuthorizationHandler());
+		                                                                  .addFilterPaths("/menu/*")    // 해당 경로 제외처리
+		                                                                  .setPermitAll();                        // 나머지는 전부 인증요구
 		
 		// 인가 필터 등록
-		
 		JwtSecurityConfiguration jwtSecurityConfiguration = new JwtSecurityConfiguration();
 		jwtSecurityConfiguration.addJwtFilter(loginProvider)
 		                        .addJwtFilter(logoutProvider)
@@ -57,14 +75,12 @@ public class JwtSecurityConfig {
 	}
 	
 	@Bean
-	public FilterRegistrationBean<Filter> filterRegistrationBean(JwtResponseManager jwtResponseManager){
+	public FilterRegistrationBean<Filter> filterRegistrationBean(JwtSecurityConfiguration jwtSecurityConfiguration, JwtResponseManager jwtResponseManager){
 		
 		FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<Filter>();
 		
-		JwtSecurityConfiguration configure = this.configure();
-		
 		// 내부에서 사용될 필터 등록
-		JwtFilterChain jwtFilterChain = new JwtFilterChain(configure.getJwtFilters(), jwtResponseManager);
+		JwtFilterChain jwtFilterChain = new JwtFilterChain(jwtSecurityConfiguration.getJwtFilters(), jwtResponseManager);
 		// 스프링부트에 등록시킬 내부 필터들을 동작시킬 필터 생성
 		JwtSecurityManagerFilter jwtSecurityManagerFilter = new JwtSecurityManagerFilter(jwtFilterChain, jwtResponseManager);
 		

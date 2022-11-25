@@ -29,6 +29,8 @@ public class JwtSecurityManagerFilter implements Filter {
 	
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+		// 응답 가능으로 셋팅
+		jwtResponseManager.init();
 		// 응답 객체에 해당 요청 정보 셋팅
 		jwtResponseManager.setHttpServlet((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
 		
@@ -41,5 +43,6 @@ public class JwtSecurityManagerFilter implements Filter {
 			jwtResponseManager.sendError(exception);
 		}
 	}
+	
 	
 }

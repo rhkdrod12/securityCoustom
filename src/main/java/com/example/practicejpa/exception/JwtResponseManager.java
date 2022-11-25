@@ -16,11 +16,18 @@ import java.io.PrintWriter;
 public class JwtResponseManager {
 	@Autowired
 	private ObjectMapper objectMapper;
-	
+	private boolean responseData = false;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	
 	public static String JWT_RESPONSE_YN = "JWT_RESPONSE_YN";
+	
+	public void init(){
+		responseData = false;
+	}
+	public boolean isResponseData(){
+		return responseData;
+	}
 	
 	public void setHttpServlet(HttpServletRequest request, HttpServletResponse response){
 		this.request = request;
@@ -29,14 +36,14 @@ public class JwtResponseManager {
 	
 	public void responseJson(HttpServletRequest request, HttpServletResponse response, ResponseEntity<?> responseEntity)  {
 		
-		Object responseYn = request.getAttribute(JWT_RESPONSE_YN);
-		if(responseYn == null || !(boolean) responseYn){
+		if(!responseData){
 			// 응답여부 확인 셋팅
-			request.setAttribute(JWT_RESPONSE_YN, true);
+			responseData = true;
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setHeader("Access-Control-Allow-Credentials", "true");
 			response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
+			// response.setHeader("Access-Control-Expose-Headers", "Content-Disposition, Authorization");
 			response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
 			response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin");
 			
@@ -52,7 +59,7 @@ public class JwtResponseManager {
 		}
 	}
 	
-	public void sendJSON(ResponseEntity<?> responseEntity){
+	public void sendResponse(ResponseEntity<?> responseEntity){
 		this.responseJson(this.request, this.response, responseEntity);
 	}
 	

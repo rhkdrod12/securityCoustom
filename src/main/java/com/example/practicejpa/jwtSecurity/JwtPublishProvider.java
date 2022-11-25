@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class JwtProvider {
+public class JwtPublishProvider {
 	
 	private final String issuer;
 	private final long expireTime;
@@ -43,10 +43,10 @@ public class JwtProvider {
 	private static final String User = "User";
 	
 	@Autowired
-	public JwtProvider(@Value("${jwtProvider.scretKey:MYSYSJWT}") String scretKey,
-	                   @Value("${jwtProvider.issuer:MYSYSTEM}") String issuer,
-	                   @Value("${jwtProvider.expireTime:600}") long expireTime,
-	                   @Value("${jwtProvider.refreshTime:86400}") long refreshTime) {
+	public JwtPublishProvider(@Value("${jwtProvider.scretKey:MYSYSJWT}") String scretKey,
+	                          @Value("${jwtProvider.issuer:MYSYSTEM}") String issuer,
+	                          @Value("${jwtProvider.expireTime:600}") long expireTime,
+	                          @Value("${jwtProvider.refreshTime:86400}") long refreshTime) {
 		
 		this.issuer   = issuer;
 		this.expireTime = expireTime;

@@ -27,8 +27,6 @@ public class JwtSecurityFilterProvider {
 	private int filterOrder = Integer.MIN_VALUE;
 	// 필터
 	private JwtFilter filter;
-	// 성공 또는 실패 핸들러, 핸들러가 있는 경우 다음 필터로 넘기지 않음
-	private JwtSecurityHandler handler;
 	
 	public String[] getFilterPaths() {
 		return filterPaths;
@@ -42,9 +40,6 @@ public class JwtSecurityFilterProvider {
 		return filter;
 	}
 	
-	public JwtSecurityHandler getHandler() {
-		return handler;
-	}
 	
 	private JwtSecurityFilterProvider(JwtFilter filter) {
 		this.filter = filter;

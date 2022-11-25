@@ -1,6 +1,6 @@
 package com.example.practicejpa.jwtSecurity.authentication;
 
-import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,11 +18,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	protected static final String LOGIN_PATH = "/user/login";
 	protected static final String LOGOUT_PATH = "/user/logout";
 	
-	protected final JwtProvider jwtProvider;
+	protected final JwtPublishProvider jwtPublishProvider;
 	protected final JwtSecurityHandler jwtSecurityHandler;
 	
-	public JwtAuthFilter(JwtProvider jwtProvider, JwtSecurityHandler jwtSecurityHandler) {
-		this.jwtProvider = jwtProvider;
+	public JwtAuthFilter(JwtPublishProvider jwtPublishProvider, JwtSecurityHandler jwtSecurityHandler) {
+		this.jwtPublishProvider = jwtPublishProvider;
 		this.jwtSecurityHandler = jwtSecurityHandler;
 	}
 	

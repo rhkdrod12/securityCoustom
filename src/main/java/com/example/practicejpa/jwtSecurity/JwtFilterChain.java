@@ -32,7 +32,7 @@ public class JwtFilterChain implements FilterChain {
 		// 내부 필터 실행
 		this.doFilter(servletRequest, servletResponse);
 		// 응답 안한 경우에만 다음 필터로
-		if (!(boolean)servletRequest.getAttribute(JwtResponseManager.JWT_RESPONSE_YN)) {
+		if (!jwtResponseManager.isResponseData()) {
 			filterChain.doFilter(servletRequest, servletResponse);
 		}
 	}

@@ -1,7 +1,7 @@
 package com.example.practicejpa.controller;
 
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.jwtSecurity.JwtProvider;
+import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemCode;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/auth")
 public class LoginController {
 	@Autowired
-	JwtProvider jwtProvider;
+	JwtPublishProvider jwtPublishProvider;
 	
 	@PostMapping("/refreshToken")
 	public ResponseEntity<?> refreshToken(@RequestParam(name = "accessToken") String accessToken, @RequestParam(name = "refreshToken") String refreshToken) {
@@ -36,7 +36,7 @@ public class LoginController {
 	public ResponseEntity<?> accessValid(HttpServletRequest request) {
 		String accessToken = request.getHeader(SystemCode.AUTHORIZATION_HEADER);
 		if (ParamUtils.isNotEmpty(accessToken)) {
-			return CommResponse.done(jwtProvider.validAccessToken(accessToken) == JwtState.SUCCESS);
+			return CommResponse.done(jwtPublishProvider.validAccessToken(accessToken) == JwtState.SUCCESS);
 		}
 		return CommResponse.done(false);
 	}
