@@ -3,6 +3,7 @@ package com.example.practicejpa.jwtSecurity;
 
 import com.example.practicejpa.exception.JwtResponseManager;
 import com.example.practicejpa.jwtSecurity.filter.JwtAuthenticationFilter;
+import com.example.practicejpa.jwtSecurity.filter.JwtAuthorizationFilter;
 import com.example.practicejpa.jwtSecurity.filter.JwtLoginFilter;
 import com.example.practicejpa.jwtSecurity.authentication.JwtSecurityFilterProvider;
 import com.example.practicejpa.jwtSecurity.filter.JwtLogoutFilter;
@@ -22,23 +23,28 @@ public class JwtSecurityConfig {
 	 * 필요한거
 	 * login, logout, 경로별 인증필터, 경로별 인가필터
 	 * 실패, 성공시의 handler
-	 *
+	 * <p>
 	 * 근데 나는 어차피 별로로 만드는 건데 굳이 설정파일 만들 필요가 있을까..?
-	 *
-	 *
 	 */
 	
 	@Bean
-	public JwtLoginFilter jwtLoginFilter(){
+	public JwtLoginFilter jwtLoginFilter() {
 		return new JwtLoginFilter();
 	}
+	
 	@Bean
 	public JwtLogoutFilter jwtLogoutFilter() {
 		return new JwtLogoutFilter();
 	}
+	
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
 		return new JwtAuthenticationFilter();
+	}
+	
+	@Bean
+	public JwtAuthorizationFilter jwtAuthorizationFilter() {
+		return new JwtAuthorizationFilter();
 	}
 	
 	/**
@@ -48,7 +54,9 @@ public class JwtSecurityConfig {
 	@Bean
 	public JwtSecurityConfiguration configure(JwtLoginFilter jwtLoginFilter,
 	                                          JwtLogoutFilter jwtLogoutFilter,
-	                                          JwtAuthenticationFilter jwtAuthenticationFilter){
+	                                          JwtAuthenticationFilter jwtAuthenticationFilter,
+	                                          JwtAuthorizationFilter jwtAuthorizationFilter) {
+		
 		// 자동주입을 사용하려면 bean으로 등록을 해야하는데 이 방식으로는 어렵단 말이지..
 		// 로그인 필터 등록
 		JwtSecurityFilterProvider loginProvider = JwtSecurityFilterProvider.Filter(jwtLoginFilter)
@@ -61,21 +69,26 @@ public class JwtSecurityConfig {
 		// 인증 필터 등록
 		JwtSecurityFilterProvider authProvider = JwtSecurityFilterProvider.Filter(jwtAuthenticationFilter)
 		                                                                  .setFilterOrder(3)
-		                                                                  .addFilterPaths("/menu/*")    // 해당 경로 제외처리
+		                                                                  .addFilterPaths("/menu/*", "/auth/*")    // 해당 경로 제외처리
 		                                                                  .setPermitAll();                        // 나머지는 전부 인증요구
+		// 근데 인  증이된 경로만 인가가 되어야하는 거 아닌가..?? 나중에 고려해봅시다
+		JwtSecurityFilterProvider authoriztionProvider = JwtSecurityFilterProvider.Filter(jwtAuthorizationFilter)
+		                                                                  .setFilterOrder(4)
+		                                                                  .addFilterPaths("/menu/*", "/auth/*")    // 해당 경로 제외처리
+		                                                                  .setPermitAll();
 		
 		// 인가 필터 등록
 		JwtSecurityConfiguration jwtSecurityConfiguration = new JwtSecurityConfiguration();
 		jwtSecurityConfiguration.addJwtFilter(loginProvider)
 		                        .addJwtFilter(logoutProvider)
-		                        .addJwtFilter(authProvider);
-								
+		                        .addJwtFilter(authProvider)
+								.addJwtFilter(authoriztionProvider);
 		
 		return jwtSecurityConfiguration;
 	}
 	
 	@Bean
-	public FilterRegistrationBean<Filter> filterRegistrationBean(JwtSecurityConfiguration jwtSecurityConfiguration, JwtResponseManager jwtResponseManager){
+	public FilterRegistrationBean<Filter> filterRegistrationBean(JwtSecurityConfiguration jwtSecurityConfiguration, JwtResponseManager jwtResponseManager) {
 		
 		FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<Filter>();
 		
@@ -83,7 +96,6 @@ public class JwtSecurityConfig {
 		JwtFilterChain jwtFilterChain = new JwtFilterChain(jwtSecurityConfiguration.getJwtFilters(), jwtResponseManager);
 		// 스프링부트에 등록시킬 내부 필터들을 동작시킬 필터 생성
 		JwtSecurityManagerFilter jwtSecurityManagerFilter = new JwtSecurityManagerFilter(jwtFilterChain, jwtResponseManager);
-		
 		registrationBean.setFilter(jwtSecurityManagerFilter);
 		registrationBean.addUrlPatterns("/*");
 		
