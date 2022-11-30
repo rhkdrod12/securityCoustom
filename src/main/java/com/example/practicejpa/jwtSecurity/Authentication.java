@@ -11,15 +11,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
-    
+public class Authentication {
     private String userId;
-    private String userPw;
     private String name;
-    
-    // @JsonSerialize(contentUsing = JwtGrantSerializer.class)
-    // @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)
     private Set<String> auths;
-    
-    private JWTResult token;
 }

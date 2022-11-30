@@ -13,7 +13,7 @@ public class JwtSecurityException extends GlobalException {
 	}
 	
 	public JwtSecurityException(MessageCode messageCode){
-		super(messageCode);
+		super(messageCode.Message());
 	}
 	
 }

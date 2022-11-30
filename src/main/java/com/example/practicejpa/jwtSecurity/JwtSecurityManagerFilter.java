@@ -29,8 +29,6 @@ public class JwtSecurityManagerFilter implements Filter {
 	
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-		// 혹시 남아있을 인증 정보 제거
-		JwtContext.init();
 		// 응답 가능으로 셋팅
 		jwtResponseManager.init();
 		// 응답 객체에 해당 요청 정보 셋팅

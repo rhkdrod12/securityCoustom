@@ -36,8 +36,8 @@ public enum FileFailMessage implements FailMessage{
 		return message;
 	}
 	
-	// @Override
-	// public String Name() {
-	// 	return name();
-	// }
+	@Override
+	public String Name() {
+		return name();
+	}
 }

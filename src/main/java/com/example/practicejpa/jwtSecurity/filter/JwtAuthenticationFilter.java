@@ -2,7 +2,6 @@ package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.exception.JwtResponseManager;
-import com.example.practicejpa.jwtSecurity.JwtContext;
 import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
@@ -34,16 +33,15 @@ public class JwtAuthenticationFilter extends JwtFilter {
 		String mehtod = request.getMethod();
 		String accessToken = request.getHeader(AUTHORIZATION_HEADER);
 		
-		// 프리플라이트인 경우 허용처리, 바로 응답을 내려보내도록 함
+		// 프리플라이트인 경우 허용처리
 		if (OPTION_METHOD.equals(mehtod)) {
 			onSuccess(true);
 		}
-		// 프리플라이트가 아닌 경우
 		else if (ParamUtils.isNotEmpty(accessToken)) {
 			JwtState state = jwtPublishProvider.validAccessToken(accessToken);
 			if(state == JwtState.SUCCESS){
 				log.info("인증 성공");
-				JwtContext.setContext(jwtPublishProvider.getUser(accessToken));
+				//SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(accessToken));
 			} else if (state == JwtState.EXPIRE) {
 				log.info("만료된 인증정보");
 				throw new JwtSecurityException(SystemMessage.EXPIRE_AUTHORIZED);
@@ -51,7 +49,6 @@ public class JwtAuthenticationFilter extends JwtFilter {
 				log.info("잘못된 인증정보, 여러번 재시도시 막아야함 -> 인증정보를 조작했다라는 의미임");
 				throw new JwtSecurityException(SystemMessage.INVALID_AUTHORIZED);
 			}
-			
 			// 다음 필터로 넘김
 			filterChain.doFilter(request, response);
 			
