@@ -173,10 +173,7 @@ public class JwtPublishProvider {
 	 */
 	public JwtState validToken(String accessToken, String refreshToken) {
 		if (this.validAccessToken(accessToken) != JwtState.ERROR) {
-			String id = this.getID(accessToken);
-			if (this.validRefreshToken(id, refreshToken) != JwtState.ERROR) {
-				return JwtState.SUCCESS;
-			}
+			return this.validRefreshToken(this.getID(accessToken), refreshToken);
 		}
 		return JwtState.ERROR;
 	}
@@ -202,6 +199,7 @@ public class JwtPublishProvider {
 	
 	/**
 	 * accessToken에 저장된 Id와 IpAddress를 가지고 refreshToken의 유효성 검사..??
+	 * SUCCESS인 경우에만 통과해야함
 	 */
 	public JwtState validRefreshToken(String id, String refreshToken) {
 		try {

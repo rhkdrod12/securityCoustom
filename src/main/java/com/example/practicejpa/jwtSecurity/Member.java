@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -11,15 +12,11 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Member {
-    
     private String userId;
     private String userPw;
     private String name;
-    
-    // @JsonSerialize(contentUsing = JwtGrantSerializer.class)
-    // @JsonDeserialize(contentUsing = JwtGrantDeserializer.class)
     private Set<String> auths;
-    
     private JWTResult token;
 }

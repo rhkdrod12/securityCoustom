@@ -2,6 +2,8 @@ package com.example.practicejpa.controller;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
+import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
+import com.example.practicejpa.jwtSecurity.exception.JwtSecurityMessage;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemCode;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/auth")
-public class LoginController {
+public class AuthController {
 	@Autowired
 	JwtPublishProvider jwtPublishProvider;
 	
@@ -26,7 +28,9 @@ public class LoginController {
 	public ResponseEntity<?> refreshToken(@RequestParam(name = "accessToken") String accessToken, @RequestParam(name = "refreshToken") String refreshToken) {
 		
 		if (ParamUtils.isEmpty(accessToken) || ParamUtils.isEmpty(refreshToken)) {
-			throw new GlobalException(SystemMessage.NOT_EXIST_PARAM);
+			throw new JwtSecurityException(SystemMessage.NOT_EXIST_PARAM);
+		} else if (jwtPublishProvider.validToken(accessToken, refreshToken) == JwtState.SUCCESS) {
+		
 		}
 		
 		return CommResponse.done();
@@ -36,9 +40,17 @@ public class LoginController {
 	public ResponseEntity<?> accessValid(HttpServletRequest request) {
 		String accessToken = request.getHeader(SystemCode.AUTHORIZATION_HEADER);
 		if (ParamUtils.isNotEmpty(accessToken)) {
-			return CommResponse.done(jwtPublishProvider.validAccessToken(accessToken) == JwtState.SUCCESS);
+			//return CommResponse.done(jwtPublishProvider.validAccessToken(accessToken) == JwtState.SUCCESS);
+			JwtState jwtState = jwtPublishProvider.validAccessToken(accessToken);
+			if (jwtState == JwtState.SUCCESS) {
+				return CommResponse.done(true);
+			} else if (jwtState == JwtState.EXPIRE) {
+				throw new JwtSecurityException(JwtSecurityMessage.EXPIRE_AUTHORIZED);
+			} else {
+				throw new JwtSecurityException(SystemMessage.REQUEST_FAIL);
+			}
 		}
-		return CommResponse.done(false);
+		throw new JwtSecurityException(JwtSecurityMessage.NOT_EXIST_AUTH);
 	}
 	
 }

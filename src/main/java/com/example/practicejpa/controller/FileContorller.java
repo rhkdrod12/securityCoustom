@@ -2,6 +2,8 @@ package com.example.practicejpa.controller;
 
 import com.example.practicejpa.dto.FileMgmDto;
 import com.example.practicejpa.exception.GlobalException;
+import com.example.practicejpa.jwtSecurity.JwtContext;
+import com.example.practicejpa.jwtSecurity.Member;
 import com.example.practicejpa.model.FileMgm;
 import com.example.practicejpa.service.FileService;
 import com.example.practicejpa.utils.codeMessage.FileFailMessage;
@@ -49,6 +51,8 @@ public class FileContorller {
 	@GetMapping("/getFileList")
 	public ResponseEntity<?> fileList(@RequestParam(name = "page", required = false, defaultValue = "1") String page,
 	                                  @RequestParam(name = "pageCount", required = false, defaultValue = "10") String limit){
+		Member context = JwtContext.getContext();
+		System.out.println("context = " + context);
 		return CommResponse.done(fileService.getFileList(page, limit));
 	}
 	

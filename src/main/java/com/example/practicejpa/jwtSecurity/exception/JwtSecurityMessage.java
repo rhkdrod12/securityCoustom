@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 
 public enum JwtSecurityMessage implements MessageCode {
-	
 	/**
 	 * USER CREDENTIAL
 	 */
@@ -15,16 +14,17 @@ public enum JwtSecurityMessage implements MessageCode {
 	NOT_EXIST_USER_PW("EPUC02", "비밀번호가 존재하지 않습니다."),
 	NOT_FOUND_USER("EPUC03", "해당 사용자를 찾을 수 없습니다."),
 	NOT_EXIST_USER("EPUC04", "존재하지 않는 사용자입니다."),
+	NOT_EXIST_AUTH("EPUC05", "인증정보가 존재하지 않습니다."),
 	
-	MISMATCH_USEID("EPUC05", "아이디가 일치하지 않습니다."),
-	MISMATCH_PASSWORD("EPUC06", "비밀번호가 일치하지 않습니다."),
-	MISMATCH_USER("EPUC07", "아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."),
+	MISMATCH_USEID("EPUC06", "아이디가 일치하지 않습니다."),
+	MISMATCH_PASSWORD("EPUC07", "비밀번호가 일치하지 않습니다."),
+	MISMATCH_USER("EPUC08", "아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."),
 	
-	UNAUTHORIZED("ECUC08", "인증되지 않은 사용자입니다."),
-	INVALID_AUTHORIZED("ECUC09", "유효하지 않은 인증정보입니다."),
-	EXPIRE_AUTHORIZED("ECUC10", "만료된 인증정보입니다."),
+	UNAUTHORIZED("ECUC09", "인증되지 않은 사용자입니다."),
+	INVALID_AUTHORIZED("ECUC10", "유효하지 않은 인증정보입니다."),
+	EXPIRE_AUTHORIZED("ECUC11", "만료된 인증정보입니다."),
 	
-	ACCESS_DENIED("ECUC11", "접근 권한이 없습니다"),
+	ACCESS_DENIED("ECUC12", "접근 권한이 없습니다"),
 	;
 	
 	private final String code;
@@ -43,10 +43,10 @@ public enum JwtSecurityMessage implements MessageCode {
 	public java.lang.String Message() {
 		return message;
 	}
-	@Override
-	public String Name() {
-		return name();
-	}
+	// @Override
+	// public String Name() {
+	// 	return name();
+	// }
 	
 	/**
 	 * code를 enum으로 변환

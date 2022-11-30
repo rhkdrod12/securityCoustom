@@ -17,7 +17,7 @@ public class JwtFilterChain implements FilterChain {
 	private final JwtSecurityFilterProvider[] jwtSecurityFilterProviders;
 	private int filterIndex = 0;
 	private final int filterSize;
-	private JwtResponseManager jwtResponseManager;
+	private final JwtResponseManager jwtResponseManager;
 	
 	public JwtFilterChain(JwtSecurityFilterProvider[] jwtSecurityFilterProviders, JwtResponseManager jwtResponseManager) {
 		this.jwtSecurityFilterProviders = jwtSecurityFilterProviders;
@@ -27,8 +27,6 @@ public class JwtFilterChain implements FilterChain {
 	
 	public void doInit(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
 		this.filterIndex = 0;
-		// 응답 여부 false상태로
-		servletRequest.setAttribute(JwtResponseManager.JWT_RESPONSE_YN, false);
 		// 내부 필터 실행
 		this.doFilter(servletRequest, servletResponse);
 		// 응답 안한 경우에만 다음 필터로
@@ -48,7 +46,7 @@ public class JwtFilterChain implements FilterChain {
 				JwtFilter filter = filterProvider.getFilter();
 				filter.setJwtResponseManager(jwtResponseManager);
 				filter.doFilter(servletRequest, servletResponse, this, jwtResponseManager);
-			}else{
+			} else {
 				this.doFilter(servletRequest, servletResponse);
 			}
 		}

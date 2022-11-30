@@ -77,10 +77,10 @@ public enum SystemMessage implements SucessMessage, FailMessage {
 	public java.lang.String Message() {
 		return message;
 	}
-	@Override
-	public String Name() {
-		return name();
-	}
+	// @Override
+	// public String Name() {
+	// 	return name();
+	// }
 	
 	/**
 	 * code를 enum으로 변환

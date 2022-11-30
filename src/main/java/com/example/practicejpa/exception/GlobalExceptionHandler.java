@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(value = JwtSecurityException.class)
     public ResponseEntity<ResultMessage> handleJwtSecurityException(JwtSecurityException ex){
-        return new ResponseEntity<>(ResultMessage.fail(ex.getMessage()), ex.getHttpStatus());
+        return new ResponseEntity<>(ResultMessage.result(false, ex.getCode(), ex.getMessage()), ex.getHttpStatus());
     }
     
     @ExceptionHandler(value = GlobalException.class)
