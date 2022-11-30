@@ -15,8 +15,9 @@ public interface AuthService {
 	
 	
 	/**
-	 * Token을 발행
-	 * @param user
+	 * 로그인 성공시 토큰을 발행
+	 * @param userId
+	 * @param userPw
 	 * @return
 	 */
 	JWTResult userLogin(String userId, String userPw);

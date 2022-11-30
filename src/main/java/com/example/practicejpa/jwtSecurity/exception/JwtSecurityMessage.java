@@ -1,6 +1,5 @@
 package com.example.practicejpa.jwtSecurity.exception;
 
-import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.codeMessage.messageInterface.MessageCode;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -25,6 +24,7 @@ public enum JwtSecurityMessage implements MessageCode {
 	EXPIRE_AUTHORIZED("ECUC10", "만료된 인증정보입니다."),
 	
 	ACCESS_DENIED("ECUC11", "접근 권한이 없습니다"),
+	NOT_EXIST_AUTH("ECU12", "인증정보가 존재하지 않습니다."),
 	;
 	
 	private final String code;

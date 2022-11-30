@@ -1,6 +1,5 @@
 package com.example.practicejpa.controller;
 
-import com.example.practicejpa.dao.UserDao;
 import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityMessage;

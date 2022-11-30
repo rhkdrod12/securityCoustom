@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
 
 public class MainTest {
 	
-	
-	
-	
+	// TODO: 2022-11-30 컴포넌트 스캔 구현해보기 
 	public static void main(String[] args) {
 		
 		String defaultPath = "";
