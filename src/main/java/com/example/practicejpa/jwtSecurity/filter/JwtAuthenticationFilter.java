@@ -2,6 +2,7 @@ package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.exception.JwtResponseManager;
+import com.example.practicejpa.jwtSecurity.JwtContext;
 import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends JwtFilter {
 			JwtState state = jwtPublishProvider.validAccessToken(accessToken);
 			if(state == JwtState.SUCCESS){
 				log.info("인증 성공");
-				//SecurityContextHolder.getContext().setAuthentication(jwtProvider.getAuthentication(accessToken));
+				JwtContext.setContext(jwtPublishProvider.getUser(accessToken));
 			} else if (state == JwtState.EXPIRE) {
 				log.info("만료된 인증정보");
 				throw new JwtSecurityException(SystemMessage.EXPIRE_AUTHORIZED);

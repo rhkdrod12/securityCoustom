@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 메시지 자바 객체를 JS 객체로 변환
+ */
 public class MakeJsMessgaeCode {
-	
-	
 	public static void main(String[] args) {
 		
 		Class<JwtSecurityMessage> jwtSecurityMessageClass = JwtSecurityMessage.class;
@@ -66,7 +67,6 @@ public class MakeJsMessgaeCode {
 	
 	
 }
-
 
 class JsObject {
 	String name;

@@ -40,7 +40,7 @@ public class ResultMessage {
 	static public ResultMessage fail(Object result, FailMessage messageCode) {
 		return new ResultMessage(result, messageCode.Code(), messageCode.Message());
 	}
-	static public ResultMessage fail(FailMessage messageCode) {
+	static public ResultMessage fail(MessageCode messageCode) {
 		return new ResultMessage(false, messageCode.Code(), messageCode.Message());
 	}
 	static public ResultMessage fail(Object result, MessageCode messageCode) {

@@ -2,6 +2,7 @@ package com.example.practicejpa.handler;
 
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
+import reactor.core.publisher.Sinks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +18,10 @@ public class SEEConnectHandler {
 	
 	private static final Consumer<String> callback = id -> {
 		SSESink chatSink = sinkMap.get(id);
-		// 구독자 수가 0이면 제거 맵에서 제거
+		// 구독자 수가 0이면 제거 맵에서 제거 및 완료처리
 		if (chatSink != null ) {
 			if(chatSink.getSink().currentSubscriberCount() == 0){
+				chatSink.getSink().tryEmitComplete();
 				sinkMap.remove(id);
 			}
 		}else{
@@ -65,6 +67,10 @@ public class SEEConnectHandler {
 	 * @return
 	 */
 	public static boolean removeSink(String id) {
+		if (sinkMap.containsKey(id)) {
+			SSESink sseSink = sinkMap.get(id);
+			sseSink.getSink().tryEmitComplete();
+		}
 		return sinkMap.remove(id) != null;
 	}
 }

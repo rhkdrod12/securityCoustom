@@ -1,6 +1,7 @@
 package com.example.practicejpa.exception;
 
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import com.example.practicejpa.utils.responseEntity.ResultMessage;
 import com.example.practicejpa.utils.codeMessage.FileFailMessage;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(value = GlobalException.class)
     public ResponseEntity<ResultMessage> handleException(GlobalException ex){
-        return new ResponseEntity<>(ResultMessage.fail(ex.getMessage()), ex.getHttpStatus());
+        return  new ResponseEntity<>(ResultMessage.result(false, ex.getCode(), ex.getMessage()), ex.getHttpStatus());
     }
     
     @ExceptionHandler(value = Exception.class)

@@ -10,6 +10,7 @@ public class JwtContext {
 	private JwtContext() {}
 	
 	static public void setContext(Member user) {
+		userThreadLocal.remove();
 		userThreadLocal.set(user);
 	}
 	

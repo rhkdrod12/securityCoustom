@@ -25,22 +25,16 @@ import javax.servlet.http.HttpSession;
 public class ChatController {
 	
 	@GetMapping("/create")
-	public ResponseEntity<?> create(HttpSession httpSession) {
+	public ResponseEntity<?> create() {
 		return CommResponse.done(SEEConnectHandler.createSink().getId());
 	}
 	
-	@Autowired
-	HttpSession httpSession;
-	
 	@GetMapping("/beginChat/{id}")
-	public Flux<ResponseEntity<?>> beginChat(@PathVariable(name = "id") String chatId, @RequestParam(name = "name", required = false, defaultValue = "USER") String name, HttpServletRequest request) {
+	public Flux<ResponseEntity<?>> beginChat(@PathVariable(name = "id") String chatId, @RequestParam(name = "name", required = false, defaultValue = "USER") String name) {
 		if (SEEConnectHandler.isSink(chatId)) {
 			SSESink sink = SEEConnectHandler.getSink(chatId);
-			
-			request.getSession().setAttribute("userName", name);
-			
 			return sink.getFlux()
-			           .doFirst(() -> {
+			             .doFirst(() -> {
 				           // 처음 연결이 시작되었을 때 작동하는 부분
 				           sink.tryEmitNext(name + "가 참여하였습니다.");
 			           })
@@ -61,8 +55,10 @@ public class ChatController {
 	}
 	
 	@GetMapping("/existChat/{id}")
-	public ResponseEntity<?> existChat(@PathVariable(name = "id") String chatId, HttpSession httpSession) {
+	public ResponseEntity<?> existChat(@PathVariable(name = "id") String chatId) {
 		if (SEEConnectHandler.isSink(chatId)) {
+			// 해당 채팅 종료 처리
+			SEEConnectHandler.getSink(chatId).tryEmitComplete();
 			return CommResponse.done();
 		} else {
 			return CommResponse.fail(SystemMessage.NOT_EXIST_DATA);
@@ -70,13 +66,12 @@ public class ChatController {
 	}
 	
 	@GetMapping("/send/{id}")
-	public ResponseEntity<?> send(@PathVariable(name = "id") String chatId, @RequestParam(name = "message") String message, HttpServletRequest request) {
-		log.info("chatId: {} message: {}", chatId, message);
+	public ResponseEntity<?> send(@PathVariable(name = "id") String chatId,
+	                              @RequestParam(name = "name") String name,
+	                              @RequestParam(name = "message") String message) {
 		if (SEEConnectHandler.isSink(chatId)) {
-			log.info("Sink 진입확인");
-			String useName = (String) request.getSession().getAttribute("userName");
-			SSESink sink = SEEConnectHandler.getSink(chatId);
-			sink.tryEmitNext(String.format("%s: %s", useName, message));
+			log.info("chatId: {} userName: {} message: {}", chatId, name, message);
+			SEEConnectHandler.getSink(chatId).tryEmitNext(String.format("%s: %s", name, message));
 			return CommResponse.done();
 		} else {
 			return CommResponse.fail(SystemMessage.NOT_EXIST_DATA);

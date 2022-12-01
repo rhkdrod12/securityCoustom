@@ -26,8 +26,8 @@ public class AuthServiceImpl implements AuthService{
 	
 	public JWTResult republishAccessToken(String accessToken, String refreshToken) {
 		
-		String refreshId = jwtPublishProvider.getID(accessToken);
-		String userId = jwtPublishProvider.getUser(accessToken).getUserId();
+		String refreshId = jwtPublishProvider.getID(accessToken,false);
+		String userId = jwtPublishProvider.getUser(accessToken, false).getUserId();
 		
 		User user = userRepository.findByUserId(userId)
 		                          .orElseThrow(() -> new JwtSecurityException(JwtSecurityMessage.NOT_FOUND_USER));

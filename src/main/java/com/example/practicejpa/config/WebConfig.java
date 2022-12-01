@@ -23,6 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
 		        .allowedHeaders("*")
 		        .allowedOrigins("http://localhost:3000", "http://192.168.10.79:3000", "http://127.0.0.1:3000")
 		        .allowedMethods("*")
+		        .maxAge(7200)
 		        .allowCredentials(true);
+		
+		//response.setHeader("Access-Control-Max-Age", "7200");
 	}
 }

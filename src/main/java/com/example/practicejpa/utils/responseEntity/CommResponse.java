@@ -27,16 +27,14 @@ public class CommResponse {
 	}
 	static public ResponseEntity<Object> done(Object result, MessageCode messageCode, HttpStatus httpStatus) {return ResponseEntity.status(httpStatus).body(ResultMessage.done(result, messageCode));}
 	
-	static public ResponseEntity<Object> fail(){return ResponseEntity.badRequest().body(ResultMessage.fail(false,SystemMessage.REQUEST_FAIL));}
-	static public ResponseEntity<Object> fail(FailMessage failMessage){return ResponseEntity.badRequest().body(ResultMessage.fail(false, failMessage));}
-	static public ResponseEntity<Object> fail(FailMessage failMessage, HttpStatus httpStatus){return ResponseEntity.status(httpStatus).body(ResultMessage.fail(false, failMessage));}
 	
 	static public ResponseEntity<Object> fail(GlobalException exception){
 		return new ResponseEntity<>(ResultMessage.result(false, exception.getCode(), exception.getMessage()), exception.getHttpStatus());
 	}
-	
+	static public ResponseEntity<Object> fail(){return ResponseEntity.badRequest().body(ResultMessage.fail(false,SystemMessage.REQUEST_FAIL));}
+	static public ResponseEntity<Object> fail(MessageCode failMessage){return ResponseEntity.badRequest().body(ResultMessage.fail(false, failMessage));}
+	static public ResponseEntity<Object> fail(MessageCode failMessage, HttpStatus httpStatus){return ResponseEntity.status(httpStatus).body(ResultMessage.fail(false, failMessage));}
 	static public ResponseEntity<Object> fail(Object result){return ResponseEntity.badRequest().body(ResultMessage.fail(result));}
-	static public ResponseEntity<Object> fail(Object result, FailMessage failMessage) {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}
 	static public ResponseEntity<Object> fail(Object result, MessageCode failMessage) {return ResponseEntity.badRequest().body(ResultMessage.fail(result, failMessage));}
 	static public ResponseEntity<Object> fail(Object result, MessageCode failMessage, HttpStatus httpStatus) {return ResponseEntity.status(httpStatus).body(ResultMessage.fail(result, failMessage));}
 }

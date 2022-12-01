@@ -46,6 +46,9 @@ public class JwtResponseManager {
 			// response.setHeader("Access-Control-Expose-Headers", "Content-Disposition, Authorization");
 			response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
 			response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin");
+			// 프리플라이트 요청에 대한 만료시간 설정
+			response.setHeader("Access-Control-Max-Age", "7200");
+			
 			
 			response.setStatus(responseEntity.getStatusCodeValue());
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE);

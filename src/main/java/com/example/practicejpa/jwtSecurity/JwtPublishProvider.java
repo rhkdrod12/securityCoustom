@@ -3,6 +3,7 @@ package com.example.practicejpa.jwtSecurity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -38,7 +39,6 @@ public class JwtPublishProvider {
 	private final JWTVerifier jwtVerifier;
 	
 	private static final String ID = "Id";
-	private static final String IP_ADDRESS = "IpAddress";
 	private static final String Auth = "Auth";
 	private static final String User = "User";
 	
@@ -100,14 +100,14 @@ public class JwtPublishProvider {
 	 * @param
 	 * @return
 	 */
-	public String createAccessToken(String id, Member memberDto) {
+	public String createAccessToken(String id, Member memberInfo) {
 		
-		List<String> auths = new ArrayList<>(Optional.ofNullable(memberDto.getAuths())
+		List<String> auths = new ArrayList<>(Optional.ofNullable(memberInfo.getAuths())
 		                                             .orElse(new HashSet<>()));
 		
-		memberDto.setUserPw("");
+		memberInfo.setUserPw("");
 		
-		Map<String, Object> member = CopyUtils.convertMap(memberDto);
+		Map<String, Object> member = CopyUtils.convertMap(memberInfo);
 		
 		return JWT.create()
 		          .withClaim(ID, id)
@@ -155,10 +155,34 @@ public class JwtPublishProvider {
 		}
 	}
 	
+	public Member getUser(String token, boolean valid) {
+		
+		try {
+			DecodedJWT verify = valid ? jwtVerifier.verify(token) : JWT.decode(token);
+			
+			Map<String, Object> memMap = verify.getClaim(User).asMap();
+			List<String> auths = verify.getClaim(Auth).asList(String.class);
+			memMap.put("auths", auths);
+			
+			return CopyUtils.convertObject(memMap, Member.class);
+			
+		} catch (JWTVerificationException ignored) {
+			return null;
+		}
+	}
+	
 	public String getID(String token) {
 		try {
-			DecodedJWT verify = jwtVerifier.verify(token);
-			return verify.getClaim(ID).asString();
+			return jwtVerifier.verify(token).getClaim(ID).asString();
+		} catch (JWTVerificationException e) {
+			return null;
+		}
+	}
+	
+	public String getID(String token, boolean valid) {
+		try {
+			DecodedJWT decodedJWT = valid ? jwtVerifier.verify(token) : JWT.decode(token);
+			return decodedJWT.getClaim(ID).asString();
 		} catch (JWTVerificationException e) {
 			return null;
 		}
@@ -173,7 +197,7 @@ public class JwtPublishProvider {
 	 */
 	public JwtState validToken(String accessToken, String refreshToken) {
 		if (this.validAccessToken(accessToken) != JwtState.ERROR) {
-			String id = this.getID(accessToken);
+			String id = this.getID(accessToken, false);
 			if (this.validRefreshToken(id, refreshToken) != JwtState.ERROR) {
 				return JwtState.SUCCESS;
 			}
