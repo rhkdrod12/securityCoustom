@@ -1,6 +1,5 @@
 package com.example.practicejpa.jwtSecurity.handler;
 
-import com.example.practicejpa.jwtSecurity.JWTResult;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,13 +1,10 @@
 package com.example.practicejpa;
 
-import com.example.practicejpa.utils.codeMessage.SystemMessage;
-import javassist.tools.reflect.Reflection;
-import org.reflections.Reflections;
-import org.reflections.scanners.TypeElementsScanner;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
+import com.example.practicejpa.utils.JwtAuth;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -17,65 +14,99 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainTest {
 	
 	// TODO: 2022-11-30 컴포넌트 스캔 구현해보기 
 	public static void main(String[] args) {
 		
-		String defaultPath = "";
+		ClassScanner classScanner = new ClassScanner();
+		List<Path> paths = classScanner.getPaths();
+		List<Class<?>> classList = classScanner.getClassList();
+		System.out.println(paths);
 		
-		try {
-			Visitor visitor = new Visitor();
-			Path path = visitor.getClassPath();
-			Path path1 = Files.walkFileTree(path, visitor);
-			System.out.println("dlat");
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		List<Class<?>> includeAnnotationClassList = classScanner.getIncludeAnnotationClassList(JwtAuth.class);
+		System.out.println(includeAnnotationClassList);
 		
-		
-		// SystemMessage sa0001 = SystemMessage.toEnum("SA0001");
-		// System.out.println(sa0001);
-		//
-		// PathMatcher pathMatcher = new AntPathMatcher();
-		//
-		// boolean b = pathMatcher.matchStart("/start/**", "/start/eee/qqq");
-		// System.out.println("b = " + b);
-		
-		//
-		// JwtProvider jwtProvider = new JwtProvider();
-		//
-		// MemberDto memberDto = new MemberDto();
-		// memberDto.setUserId("1");
-		// memberDto.setName("홍길동");
-		//
-		// Set<GrantedAuthority> auths = new HashSet<>();
-		//
-		// auths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		// auths.add(new SimpleGrantedAuthority("ROLE_USER"));
-		// memberDto.setAuths(auths);
-		//
-		// String uuid = UUID.randomUUID().toString();
-		//
-		// String accessToken = jwtProvider.createAccessToken(uuid, memberDto);
-		// String refreshToken = jwtProvider.createRefreshToken(uuid);
-		//
-		// System.out.println("accessToken = " + accessToken);
-		// System.out.println("refreshToken = " + refreshToken);
-		//
-		// JwtState state = jwtProvider.validRefreshToken(refreshToken, uuid);
-		//
-		// System.out.println(state);
-		//
-		// System.out.println();
-		//
 	}
 }
 
-class Visitor implements FileVisitor<Path> {
+/**
+ * 해당 프로젝트 내 클래스 파일의 경로를 읽어오기 위한 클래스
+ */
+class ClassScanner{
+	
+	public Path getClassPath(){
+		try {
+			return Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<Path> getPaths() {
+		return getPaths(getClassPath());
+	}
+	
+	public List<Path> getPaths(Path path) {
+		ClassVisitor visitor = new ClassVisitor();
+		try {
+			Files.walkFileTree(path, visitor);
+			return visitor.getPaths();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<Class<?>> getClassList() {
+		return this.getClassList(getClassPath());
+	}
+	
+	public List<Class<?>> getClassList(Path path) {
+		List<Path> paths = getPaths(path);
+		List<Class<?>> clz = new ArrayList<>();
+		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		
+		for (Path childPath : paths) {
+			try {
+				clz.add(Class.forName(getClassName(childPath), false, contextClassLoader));
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return clz;
+	}
+	
+	public List<Class<?>> getIncludeAnnotationClassList(Class<? extends Annotation> annotation) {
+		return getIncludeAnnotationClassList(getClassPath(), annotation);
+	}
+	
+	public List<Class<?>> getIncludeAnnotationClassList(Path path, Class<? extends Annotation> annotation) {
+		
+		List<Class<?>> classList = getClassList(path);
+		List<Class<?>> result = new ArrayList<>();
+		
+		for (Class<?> aClass : classList) {
+			if (aClass.getAnnotation(annotation) != null) {
+				result.add(aClass);
+			}
+		}
+		return result;
+	}
+	
+	private String getClassName(Path path){
+		int defaultPathLength = this.getClassPath().toString().length() + 1;
+		int classExtLength = 6;
+		
+		String pathName = path.toString();
+		return pathName.substring(defaultPathLength, pathName.length() - classExtLength)
+		                   .replaceAll("\\\\", ".");
+	}
+	
+}
+
+
+class ClassVisitor implements FileVisitor<Path> {
 	
 	List<Path> paths = new ArrayList<>();
 	
@@ -85,6 +116,10 @@ class Visitor implements FileVisitor<Path> {
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public List<Path> getPaths(){
+		return paths;
 	}
 	
 	@Override

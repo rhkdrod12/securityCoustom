@@ -1,7 +1,6 @@
 package com.example.practicejpa.jwtSecurity.authentication;
 
 import com.example.practicejpa.jwtSecurity.RequestMatcher;
-import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 import com.example.practicejpa.jwtSecurity.filter.JwtFilter;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtAcess;
 

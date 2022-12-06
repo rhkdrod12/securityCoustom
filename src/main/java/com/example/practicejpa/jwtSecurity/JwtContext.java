@@ -1,8 +1,5 @@
 package com.example.practicejpa.jwtSecurity;
 
-import com.example.practicejpa.model.User;
-
-
 public class JwtContext {
 	
 	static private final ThreadLocal<Member> userThreadLocal = new ThreadLocal<>();

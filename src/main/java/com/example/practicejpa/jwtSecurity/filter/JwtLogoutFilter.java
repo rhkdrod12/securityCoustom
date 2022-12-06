@@ -1,8 +1,6 @@
 package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.exception.JwtResponseManager;
-import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
-import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;

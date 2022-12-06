@@ -1,8 +1,8 @@
 package com.example.practicejpa.dao;
 
+import com.example.practicejpa.dto.FileMgmDto;
 import com.example.practicejpa.model.FileMgm;
 import com.example.practicejpa.model.QFileMgm;
-import com.example.practicejpa.dto.FileMgmDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

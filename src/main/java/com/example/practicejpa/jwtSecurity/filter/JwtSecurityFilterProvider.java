@@ -1,7 +1,6 @@
 package com.example.practicejpa.jwtSecurity.filter;
 
 import com.example.practicejpa.jwtSecurity.RequestMatcher;
-import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtAcess;
 
 import javax.servlet.http.HttpServletRequest;

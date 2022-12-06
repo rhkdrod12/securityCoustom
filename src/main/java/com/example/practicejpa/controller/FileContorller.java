@@ -9,7 +9,6 @@ import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ContentDisposition;

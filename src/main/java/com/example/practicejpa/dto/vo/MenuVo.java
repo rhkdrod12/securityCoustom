@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.websocket.OnError;
-import java.util.ArrayList;
-
 @Builder
 @Getter
 @Setter

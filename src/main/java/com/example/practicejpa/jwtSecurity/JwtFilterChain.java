@@ -3,7 +3,6 @@ package com.example.practicejpa.jwtSecurity;
 import com.example.practicejpa.exception.JwtResponseManager;
 import com.example.practicejpa.jwtSecurity.authentication.JwtSecurityFilterProvider;
 import com.example.practicejpa.jwtSecurity.filter.JwtFilter;
-import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

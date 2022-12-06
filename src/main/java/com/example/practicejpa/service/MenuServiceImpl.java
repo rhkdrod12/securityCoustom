@@ -1,23 +1,19 @@
 package com.example.practicejpa.service;
 
 import com.example.practicejpa.dao.MenuDao;
+import com.example.practicejpa.dao.repository.MenuRepository;
+import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.handler.ChannelHandler;
 import com.example.practicejpa.handler.SinksHandler;
 import com.example.practicejpa.model.BaseEntity;
 import com.example.practicejpa.model.MenuMgm;
-import com.example.practicejpa.dao.repository.MenuRepository;
-import com.example.practicejpa.dto.vo.MenuVo;
-import com.example.practicejpa.utils.codeMessage.SystemMessage;
-import com.example.practicejpa.utils.other.CopyUtils;
-import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

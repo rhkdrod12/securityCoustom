@@ -1,10 +1,9 @@
 package com.example.practicejpa.exception;
 
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
-import com.example.practicejpa.utils.responseEntity.CommResponse;
-import com.example.practicejpa.utils.responseEntity.ResultMessage;
 import com.example.practicejpa.utils.codeMessage.FileFailMessage;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
+import com.example.practicejpa.utils.responseEntity.ResultMessage;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

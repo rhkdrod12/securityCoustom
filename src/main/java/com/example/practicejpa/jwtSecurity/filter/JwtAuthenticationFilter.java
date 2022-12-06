@@ -1,11 +1,9 @@
 package com.example.practicejpa.jwtSecurity.filter;
 
-import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.exception.JwtResponseManager;
 import com.example.practicejpa.jwtSecurity.JwtContext;
 import com.example.practicejpa.jwtSecurity.JwtPublishProvider;
 import com.example.practicejpa.jwtSecurity.exception.JwtSecurityException;
-import com.example.practicejpa.jwtSecurity.handler.JwtSecurityHandler;
 import com.example.practicejpa.jwtSecurity.jwtEnum.JwtState;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.other.ParamUtils;

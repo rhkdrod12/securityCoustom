@@ -1,6 +1,5 @@
 package com.example.practicejpa.handler;
 
-import com.example.practicejpa.dto.vo.MenuVo;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

@@ -3,10 +3,10 @@ package com.example.practicejpa.controller;
 import com.example.practicejpa.exception.GlobalException;
 import com.example.practicejpa.handler.SEEConnectHandler;
 import com.example.practicejpa.handler.SSESink;
+import com.example.practicejpa.utils.JwtAuth;
 import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.utils.responseEntity.CommResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.SignalType;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 @RestController
 @RequestMapping("/chat")
 @Slf4j
+@JwtAuth
 public class ChatController {
 	
 	@GetMapping("/create")

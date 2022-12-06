@@ -1,9 +1,9 @@
 package com.example.practicejpa.controller;
 
-import com.example.practicejpa.utils.responseEntity.CommResponse;
 import com.example.practicejpa.exception.GlobalException;
-import com.example.practicejpa.utils.codeMessage.SystemMessage;
 import com.example.practicejpa.service.CodeService;
+import com.example.practicejpa.utils.codeMessage.SystemMessage;
+import com.example.practicejpa.utils.responseEntity.CommResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

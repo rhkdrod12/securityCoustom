@@ -2,14 +2,11 @@ package com.example.practicejpa.jwtSecurity;
 
 
 import com.example.practicejpa.exception.JwtResponseManager;
+import com.example.practicejpa.jwtSecurity.authentication.JwtSecurityFilterProvider;
 import com.example.practicejpa.jwtSecurity.filter.JwtAuthenticationFilter;
 import com.example.practicejpa.jwtSecurity.filter.JwtAuthorizationFilter;
 import com.example.practicejpa.jwtSecurity.filter.JwtLoginFilter;
-import com.example.practicejpa.jwtSecurity.authentication.JwtSecurityFilterProvider;
 import com.example.practicejpa.jwtSecurity.filter.JwtLogoutFilter;
-import com.example.practicejpa.jwtSecurity.handler.JwtAuthorizationHandler;
-import com.example.practicejpa.jwtSecurity.handler.JwtLoginHandler;
-import com.example.practicejpa.jwtSecurity.handler.JwtLogoutHandler;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
